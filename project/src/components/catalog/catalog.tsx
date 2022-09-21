@@ -1,5 +1,5 @@
 import { useAppSelector } from '../../hooks/hooks';
-import { getProducts } from '../../store/products-data/selectors';
+import { getProducts, getPromoProduct } from '../../store/products-data/selectors';
 import Banner from '../banner/banner';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCardsList from '../catalog-cards-list/catalog-cards-list';
@@ -9,10 +9,11 @@ import Pagination from '../pagination/pagination';
 
 export default function Catalog(): JSX.Element {
   const products = useAppSelector(getProducts);
+  const promoProduct = useAppSelector(getPromoProduct);
 
   return (
     <main>
-      <Banner />
+      {promoProduct && <Banner promoProduct={promoProduct}/>}
       <div className="page-content">
         <Breadcrumbs />
         <section className="catalog">
