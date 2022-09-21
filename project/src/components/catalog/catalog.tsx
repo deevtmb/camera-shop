@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAppSelector } from '../../hooks/hooks';
 import { getProducts, getPromoProduct } from '../../store/products-data/selectors';
 import Banner from '../banner/banner';
@@ -8,8 +9,15 @@ import CatalogSort from '../catalog-sort/catalog-sort';
 import Pagination from '../pagination/pagination';
 
 export default function Catalog(): JSX.Element {
+  const PRODUCTS_PER_VIEW = 9;
+  const DEFAULT_PAGE = 1;
+
   const products = useAppSelector(getProducts);
   const promoProduct = useAppSelector(getPromoProduct);
+
+  const pagesCount = Math.ceil(products.length / PRODUCTS_PER_VIEW);
+
+  const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
 
   return (
     <main>
@@ -25,8 +33,12 @@ export default function Catalog(): JSX.Element {
               </div>
               <div className="catalog__content">
                 <CatalogSort />
-                <CatalogCardsList products={products} />
-                <Pagination/>
+                <CatalogCardsList products={products.slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)} />
+                <Pagination
+                  pagesCount={pagesCount}
+                  currentPage={currentPage}
+                  onPageLinkClick={(page: number) => setCurrentPage(page)}
+                />
               </div>
             </div>
           </div>

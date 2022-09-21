@@ -1,3 +1,4 @@
+import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../const';
 import { Product } from '../../types/product';
@@ -24,12 +25,16 @@ export default function CatalogCard({product}: CatalogCardProps): JSX.Element {
         <div className="rate product-card__rate">
           {Array.from({length: STARS_COUNT}).map((_, starId) => (
             starId < rating ?
-              <svg width="17" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-full-star"></use>
-              </svg> :
-              <svg width="17" height="16" aria-hidden="true">
-                <use xlinkHref="#icon-star"></use>
-              </svg>
+              <Fragment key={`star-${STARS_COUNT - starId}`}>
+                <svg width="17" height="16" aria-hidden="true">
+                  <use xlinkHref="#icon-full-star"></use>
+                </svg>§
+              </Fragment> :
+              <Fragment key={`star-${STARS_COUNT - starId}`} >
+                <svg width="17" height="16" aria-hidden="true">
+                  <use xlinkHref="#icon-star"></use>
+                </svg>
+              </Fragment>
           ))}
           <p className="visually-hidden">Рейтинг: {rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
