@@ -3657,6 +3657,5 @@ button,
 
   .tabs__control:active {
     background-color: #f4f4fc;
-    pointer-events: none;
   }
 }
