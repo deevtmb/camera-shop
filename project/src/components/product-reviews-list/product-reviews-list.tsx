@@ -4,9 +4,10 @@ import ProductReview from '../product-review/product-review';
 
 type ProductReviewsListProps = {
   reviews: Review[];
+  onReviewButtonClick: (arg: boolean) => void;
 }
 
-export default function ProductReviewsList({reviews}: ProductReviewsListProps): JSX.Element {
+export default function ProductReviewsList({reviews, onReviewButtonClick}: ProductReviewsListProps): JSX.Element {
   const REVIEWS_PER_VIEW = 3;
 
   const [visibleReviewsCount, setVisibleReviewsCount] = useState(REVIEWS_PER_VIEW);
@@ -16,7 +17,7 @@ export default function ProductReviewsList({reviews}: ProductReviewsListProps): 
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn" type="button">Оставить свой отзыв</button>
+          <button className="btn" type="button" onClick={() => onReviewButtonClick(true)}>Оставить свой отзыв</button>
         </div>
         <ul className="review-block__list">
           {reviews.slice(0, visibleReviewsCount).map((review) => <ProductReview key={review.id} productReview={review}/>)}
