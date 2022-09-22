@@ -34,7 +34,7 @@ export const fetchPromoProductAction = createAsyncThunk<PromoProduct, undefined,
 export const fetchSimilarProductsAction = createAsyncThunk<Product[], string, {extra: AxiosInstance}>(
   'data/fetchSimilarProducts',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Product[]>(`${APIRoute.Products}/${id}/${APIRoute.Similar}`);
+    const {data} = await api.get<Product[]>(`${APIRoute.Products}/${id}${APIRoute.Similar}`);
     return data;
   }
 );
@@ -42,7 +42,7 @@ export const fetchSimilarProductsAction = createAsyncThunk<Product[], string, {e
 export const fetchProductReviewsAction = createAsyncThunk<Review[], string, {extra: AxiosInstance}>(
   'data/fetchProductReviews',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Review[]>(`${APIRoute.Products}/${id}/${APIRoute.Reviews}`);
+    const {data} = await api.get<Review[]>(`${APIRoute.Products}/${id}${APIRoute.Reviews}`);
     return data;
   }
 );

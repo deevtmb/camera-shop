@@ -6,15 +6,16 @@ import { getFormatedPrice } from '../../utils/common';
 
 type CatalogCardProps = {
   product: Product;
+  isActive?: boolean;
 }
 
-export default function CatalogCard({product}: CatalogCardProps): JSX.Element {
+export default function CatalogCard({product, isActive = false}: CatalogCardProps): JSX.Element {
   const STARS_COUNT = 5;
 
   const {id, name, price, rating, reviewCount, previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = product;
 
   return (
-    <div className="product-card">
+    <div className={`product-card ${isActive ? 'is-active' : ''}`}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/${previewImgWebp}, /${previewImgWebp2x} 2x`} />

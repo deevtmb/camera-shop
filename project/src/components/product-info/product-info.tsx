@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { AppRoute, ProductTab } from '../../const';
 import { Product } from '../../types/product';
 import { getFormatedPrice } from '../../utils/common';
 import ProductRating from '../product-rating/product-rating';
@@ -7,8 +10,10 @@ type ProductInfoProps = {
 }
 
 export default function ProductInfo({product}: ProductInfoProps): JSX.Element {
-  const {name, price, reviewCount, rating, description, vendorCode, type, category, level,
+  const {id, name, price, reviewCount, rating, description, vendorCode, type, category, level,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = product;
+
+  const [activeTab, setActiveTab] = useState<string>(ProductTab.Characteristics);
 
   return (
     <section className="product">
@@ -34,11 +39,25 @@ export default function ProductInfo({product}: ProductInfoProps): JSX.Element {
           </button>
           <div className="tabs product__tabs">
             <div className="tabs__controls product__tabs-controls">
-              <button className="tabs__control is-active" type="button">Характеристики</button>
-              <button className="tabs__control" type="button">Описание</button>
+              <Link
+                to={`${AppRoute.Product}${id}/${ProductTab.Characteristics}`}
+                className={`tabs__control ${activeTab === ProductTab.Characteristics && 'is-active'}`}
+                type="button"
+                onClick={() => setActiveTab(ProductTab.Characteristics)}
+              >
+                Характеристики
+              </Link>
+              <Link
+                to={`${AppRoute.Product}${id}/${ProductTab.Description}`}
+                className={`tabs__control ${activeTab === ProductTab.Description && 'is-active'}`}
+                type="button"
+                onClick={() => setActiveTab(ProductTab.Description)}
+              >
+                Описание
+              </Link>
             </div>
             <div className="tabs__content">
-              <div className="tabs__element is-active">
+              <div className={`tabs__element ${activeTab === ProductTab.Characteristics && 'is-active'}`}>
                 <ul className="product__tabs-list">
                   <li className="item-list"><span className="item-list__title">Артикул:</span>
                     <p className="item-list__text">{vendorCode}</p>
@@ -54,7 +73,7 @@ export default function ProductInfo({product}: ProductInfoProps): JSX.Element {
                   </li>
                 </ul>
               </div>
-              <div className="tabs__element">
+              <div className={`tabs__element ${activeTab === ProductTab.Description && 'is-active'}`}>
                 <div className="product__tabs-text">
                   <p>{description}</p>
                 </div>

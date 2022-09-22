@@ -1,6 +1,7 @@
 import { store } from '../store';
 import { Product } from './product';
 import { PromoProduct } from './promo-product';
+import { Review } from './review';
 
 export type State = ReturnType<typeof store.getState>;
 
@@ -12,3 +13,7 @@ export type ProductsData = {
   similarProducts: Product[];
   productInfo: Product | null;
 };
+
+export type ReviewsData = {
+  reviews: Review[];
+}

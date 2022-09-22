@@ -10,6 +10,7 @@ export default function App(): JSX.Element {
       <Route path={AppRoute.Catalog} element={<CatalogPage />} />
       <Route path={AppRoute.CatalogPage} element={<CatalogPage />} />
       <Route path={AppRoute.ProductInfo} element={<ProductPage />} />
+      <Route path={`${AppRoute.ProductInfo}${AppRoute.ProductTab}`} element={<ProductPage />} />
     </Routes>
   );
 }
