@@ -39,12 +39,12 @@ export default function Product(): JSX.Element {
           <ProductsSlider similarProducts={similarProducts} />
         </div>
         <div className="page-content__section">
-          <ProductReviewsList reviews={reviews} onReviewButtonClick={setIsModalOpen} />
+          {reviews.length && <ProductReviewsList reviews={reviews} onReviewButtonClick={setIsModalOpen} />}
         </div>
       </div>
-      {isModalOpen &&
+      {(isModalOpen && id !== undefined) &&
         <RemoveScroll>
-          <Modal onModalClose={setIsModalOpen}/>
+          <Modal onModalClose={setIsModalOpen} />
         </RemoveScroll>}
     </main>
   );

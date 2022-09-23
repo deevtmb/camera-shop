@@ -50,7 +50,8 @@ export const fetchProductReviewsAction = createAsyncThunk<Review[], string, {ext
 export const postReviewAction = createAsyncThunk<void, ReviewPost, {extra: AxiosInstance}>(
   'data/postReview',
   async (review, {extra: api}) => {
-    await api.post(APIRoute.Reviews, review);
+    const {data} = await api.post(APIRoute.Reviews, review);
+    return data;
   }
 );
 
