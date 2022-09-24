@@ -12,6 +12,7 @@ export type ProductsData = {
   promoProduct: PromoProduct | null;
   similarProducts: Product[];
   productInfo: Product | null;
+  isDataLoading: boolean;
 };
 
 export type ReviewsData = {

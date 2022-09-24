@@ -10,3 +10,5 @@ export const getPromoProduct = (state: State): PromoProduct | null => state[Name
 export const getSimilarProducts = (state: State): Product[] => state[NameSpace.Products].similarProducts;
 
 export const getProductInfo = (state: State): Product | null => state[NameSpace.Products].productInfo;
+
+export const getLoadingStatus = (state: State): boolean => state[NameSpace.Products].isDataLoading;

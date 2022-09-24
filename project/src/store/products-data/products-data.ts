@@ -8,6 +8,7 @@ const initialState: ProductsData = {
   promoProduct: null,
   similarProducts: [],
   productInfo: null,
+  isDataLoading: false,
 };
 
 export const productsData = createSlice({
@@ -16,8 +17,15 @@ export const productsData = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(fetchProductsAction.pending, (state, action) => {
+        state.isDataLoading = true;
+      })
+      .addCase(fetchProductsAction.rejected, (state, action) => {
+        state.isDataLoading = false;
+      })
       .addCase(fetchProductsAction.fulfilled, (state, action) => {
         state.products = action.payload;
+        state.isDataLoading = false;
       })
       .addCase(fetchPromoProductAction.fulfilled, (state, action) => {
         state.promoProduct = action.payload;

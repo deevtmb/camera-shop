@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useAppSelector } from '../../hooks/hooks';
-import { getProducts, getPromoProduct } from '../../store/products-data/selectors';
+import { getLoadingStatus, getProducts, getPromoProduct } from '../../store/products-data/selectors';
 import Banner from '../banner/banner';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCardsList from '../catalog-cards-list/catalog-cards-list';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
+import LoadingLayout from '../loading-layout/loading-layout';
 import Pagination from '../pagination/pagination';
 
 export default function Catalog(): JSX.Element {
@@ -14,6 +15,7 @@ export default function Catalog(): JSX.Element {
 
   const products = useAppSelector(getProducts);
   const promoProduct = useAppSelector(getPromoProduct);
+  const isDataLoading = useAppSelector(getLoadingStatus);
 
   const pagesCount = Math.ceil(products.length / PRODUCTS_PER_VIEW);
 
@@ -33,12 +35,15 @@ export default function Catalog(): JSX.Element {
               </div>
               <div className="catalog__content">
                 <CatalogSort />
-                <CatalogCardsList products={products.slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)} />
-                <Pagination
-                  pagesCount={pagesCount}
-                  currentPage={currentPage}
-                  onPageLinkClick={(page: number) => setCurrentPage(page)}
-                />
+                {isDataLoading ?
+                  <LoadingLayout /> :
+                  <CatalogCardsList products={products.slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)} />}
+                {!!products.length &&
+                  <Pagination
+                    pagesCount={pagesCount}
+                    currentPage={currentPage}
+                    onPageLinkClick={(page: number) => setCurrentPage(page)}
+                  />}
               </div>
             </div>
           </div>

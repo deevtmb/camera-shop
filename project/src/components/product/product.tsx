@@ -6,6 +6,7 @@ import { fetchProductInfoAction, fetchProductReviewsAction, fetchSimilarProducts
 import { getProductInfo, getSimilarProducts } from '../../store/products-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
+import LoadingLayout from '../loading-layout/loading-layout';
 import Modal from '../modal/modal';
 import ProductInfo from '../product-info/product-info';
 import ProductReviewsList from '../product-reviews-list/product-reviews-list';
@@ -20,6 +21,8 @@ export default function Product(): JSX.Element {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const checkProductId = () => Boolean(product && id && product.id === +id);
+
   useEffect(() => {
     if (id) {
       dispatch(fetchProductInfoAction(id));
@@ -33,13 +36,13 @@ export default function Product(): JSX.Element {
       <div className="page-content">
         <Breadcrumbs productName={product ? product.name : null}/>
         <div className="page-content__section">
-          {product && <ProductInfo product={product}/>}
+          {product && checkProductId() ? <ProductInfo product={product}/> : <LoadingLayout />}
         </div>
         <div className="page-content__section">
-          <ProductsSlider similarProducts={similarProducts} />
+          {(!!similarProducts.length && checkProductId()) && <ProductsSlider similarProducts={similarProducts} />}
         </div>
         <div className="page-content__section">
-          {reviews.length && <ProductReviewsList reviews={reviews} onReviewButtonClick={setIsModalOpen} />}
+          <ProductReviewsList reviews={reviews} onReviewButtonClick={setIsModalOpen} />
         </div>
       </div>
       {(isModalOpen && id !== undefined) &&

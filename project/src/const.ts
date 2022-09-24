@@ -4,7 +4,8 @@ export const AppRoute = {
   CatalogPage: '/catalog/:page',
   Product: '/product/',
   ProductInfo: '/product/:id',
-  ProductTab: '/:tab'
+  ProductTab: '/:tab',
+  NotFoundPage: '*',
 } as const;
 
 export const APIRoute = {

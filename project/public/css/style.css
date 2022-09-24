@@ -3538,6 +3538,37 @@ button,
   opacity: 1;
 }
 
+.info-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #a2a2ff;
+  font-size: 30px;
+}
+
+.info-wrapper .big-text{
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.info-wrapper a {
+  color: #a2a2ff;
+}
+
+.info-wrapper a:hover {
+  text-decoration: underline;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80%;
+  width: 100%;
+  margin: 0 auto;
+}
+
 /* @media (hover: hover), screen and (min-width: 0\0) {
   &:hover,
   &:focus {
