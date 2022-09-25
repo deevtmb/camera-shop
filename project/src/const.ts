@@ -16,7 +16,7 @@ export const APIRoute = {
 } as const;
 
 export const NameSpace = {
-  Products: 'PORDUCTS_DATA',
+  Products: 'PRODUCTS_DATA',
   Reviews: 'REVIEWS_DATA',
 } as const;
 

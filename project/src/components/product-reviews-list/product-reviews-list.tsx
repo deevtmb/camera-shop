@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Review } from '../../types/review';
 import ProductReview from '../product-review/product-review';
 
@@ -9,6 +10,8 @@ type ProductReviewsListProps = {
 
 export default function ProductReviewsList({reviews, onReviewButtonClick}: ProductReviewsListProps): JSX.Element {
   const REVIEWS_PER_VIEW = 3;
+  const {id} = useParams();
+  const prevId = id;
 
   const [visibleReviewsCount, setVisibleReviewsCount] = useState(REVIEWS_PER_VIEW);
   const visibleReviews = [...reviews]
@@ -22,7 +25,12 @@ export default function ProductReviewsList({reviews, onReviewButtonClick}: Produ
         setVisibleReviewsCount((prev) => prev + REVIEWS_PER_VIEW);
       }
     });
-  }, []);
+
+    if (id && id !== prevId) {
+      setVisibleReviewsCount(REVIEWS_PER_VIEW);
+    }
+  }, [id, prevId]);
+
 
   return (
     <section className="review-block">

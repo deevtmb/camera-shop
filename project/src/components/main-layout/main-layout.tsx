@@ -7,7 +7,7 @@ type MainLayoutProps = {
 
 export default function MainLayout({children}: MainLayoutProps): JSX.Element {
   return (
-    <div className="wrapper">
+    <div className="wrapper" data-testid="main layout">
       <Header/>
       {children}
       <Footer />

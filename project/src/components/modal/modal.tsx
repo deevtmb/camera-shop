@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import FocusTrap from 'focus-trap-react';
 import { useEffect, useState} from 'react';
 import { useParams } from 'react-router-dom';
