@@ -21,7 +21,7 @@ export default function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Elemen
           </li>
           <li className="breadcrumbs__item">
             {pathname.includes(AppRoute.Catalog) ?
-              <span className={`breadcrumbs__link ${pathname === AppRoute.Catalog && 'breadcrumbs__link--active'}`}>Каталог</span> :
+              <span className={`breadcrumbs__link ${pathname.startsWith(AppRoute.Catalog) ? 'breadcrumbs__link--active' : ''}`}>Каталог</span> :
               <Link className="breadcrumbs__link" to={AppRoute.Catalog}>Каталог
                 <svg width="5" height="8" aria-hidden="true">
                   <use xlinkHref="#icon-arrow-mini"></use>
