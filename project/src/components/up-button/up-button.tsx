@@ -2,11 +2,7 @@ export default function UpButton(): JSX.Element {
   return (
     <a className="up-btn" href="#header" onClick={(evt) => {
       evt.preventDefault();
-      document.documentElement.style.scrollBehavior = 'smooth';
-      window.scrollTo(0, 0);
-      setTimeout(() => {
-        document.documentElement.style.scrollBehavior = 'auto';
-      }, 2000);
+      window.scrollTo({top: 0, behavior: 'smooth'});
     }}
     data-testid='up button'
     >

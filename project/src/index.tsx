@@ -7,6 +7,7 @@ import { store } from './store';
 import { fetchProductsAction, fetchPromoProductAction } from './store/api-actions';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 
 store.dispatch(fetchProductsAction());
 store.dispatch(fetchPromoProductAction());
@@ -19,6 +20,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter >
+        <ScrollToTop />
         <ToastContainer />
         <App />
       </BrowserRouter>

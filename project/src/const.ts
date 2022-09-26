@@ -36,3 +36,8 @@ export const ProductSlider = {
   SlidesPerView: 3,
   SlidesStep: 1,
 } as const;
+
+export const DocumentTitle = {
+  Catalog: 'Каталог - Фотошоп',
+  Product: 'Продукт - Фотошоп',
+} as const;

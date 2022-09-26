@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { useParams } from 'react-router-dom';
+import { DocumentTitle } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchProductInfoAction, fetchProductReviewsAction, fetchSimilarProductsAction } from '../../store/api-actions';
 import { getProductInfo, getSimilarProducts } from '../../store/products-data/selectors';
@@ -24,6 +25,8 @@ export default function Product(): JSX.Element {
   const checkProductId = () => Boolean(product && id && product.id === +id);
 
   useEffect(() => {
+    document.title = DocumentTitle.Product;
+
     if (id) {
       dispatch(fetchProductInfoAction(id));
       dispatch(fetchSimilarProductsAction(id));

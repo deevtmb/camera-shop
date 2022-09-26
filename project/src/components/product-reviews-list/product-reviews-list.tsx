@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { Review } from '../../types/review';
 import ProductReview from '../product-review/product-review';
 
@@ -10,8 +9,6 @@ type ProductReviewsListProps = {
 
 export default function ProductReviewsList({reviews, onReviewButtonClick}: ProductReviewsListProps): JSX.Element {
   const REVIEWS_PER_VIEW = 3;
-  const {id} = useParams();
-  const prevId = id;
 
   const [visibleReviewsCount, setVisibleReviewsCount] = useState(REVIEWS_PER_VIEW);
   const visibleReviews = [...reviews]
@@ -19,17 +16,19 @@ export default function ProductReviewsList({reviews, onReviewButtonClick}: Produ
     .slice(0, visibleReviewsCount);
 
   useEffect(() => {
+    const page = document.documentElement;
+
     window.addEventListener('scroll', () => {
-      if (document.documentElement.scrollTop + document.documentElement.clientHeight === document.documentElement.scrollHeight) {
-        window.scrollTo(0, document.documentElement.scrollHeight - 1);
-        setVisibleReviewsCount((prev) => prev + REVIEWS_PER_VIEW);
+      if (page.scrollTop + page.clientHeight === page.scrollHeight) {
+        setVisibleReviewsCount(visibleReviewsCount + REVIEWS_PER_VIEW);
       }
     });
 
-    if (id && id !== prevId) {
-      setVisibleReviewsCount(REVIEWS_PER_VIEW);
-    }
-  }, [id, prevId]);
+  }, [visibleReviewsCount]);
+
+  useEffect(() => {
+    setVisibleReviewsCount(REVIEWS_PER_VIEW);
+  }, [reviews]);
 
 
   return (

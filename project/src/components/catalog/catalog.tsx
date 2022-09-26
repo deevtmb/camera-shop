@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { DocumentTitle } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import { getLoadingStatus, getProducts, getPromoProduct } from '../../store/products-data/selectors';
 import Banner from '../banner/banner';
@@ -20,6 +21,10 @@ export default function Catalog(): JSX.Element {
   const pagesCount = Math.ceil(products.length / PRODUCTS_PER_VIEW);
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
+
+  useEffect(() => {
+    document.title = DocumentTitle.Product;
+  }, []);
 
   return (
     <main>
