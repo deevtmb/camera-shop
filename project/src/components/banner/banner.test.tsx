@@ -35,6 +35,10 @@ describe('Component: Banner', () => {
               path={AppRoute.ProductInfo}
               element={<ProductInfo product={product} />}
             />
+            <Route
+              path={`${AppRoute.ProductInfo}${AppRoute.ProductTab}`}
+              element={<ProductInfo product={product} />}
+            />
           </Routes>
         </MemoryRouter>
       </Provider>
