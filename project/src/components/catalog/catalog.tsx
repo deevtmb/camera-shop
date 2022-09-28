@@ -42,7 +42,9 @@ export default function Catalog(): JSX.Element {
                 <CatalogSort />
                 {isDataLoading ?
                   <LoadingLayout /> :
-                  <CatalogCardsList products={products.slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)} />}
+                  <CatalogCardsList products={products
+                    .slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)}
+                  />}
                 {!!products.length &&
                   <Pagination
                     pagesCount={pagesCount}

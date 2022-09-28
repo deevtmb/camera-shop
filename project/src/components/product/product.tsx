@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { useParams } from 'react-router-dom';
-import { DocumentTitle } from '../../const';
+import { DocumentTitle, RequestStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchProductInfoAction, fetchProductReviewsAction, fetchSimilarProductsAction } from '../../store/api-actions';
 import { getProductInfo, getSimilarProducts } from '../../store/products-data/selectors';
@@ -13,7 +13,11 @@ import ProductInfo from '../product-info/product-info';
 import ProductReviewsList from '../product-reviews-list/product-reviews-list';
 import ProductsSlider from '../products-slider/products-slider';
 
-export default function Product(): JSX.Element {
+type ProductProps = {
+  onRequestStatusChange: (status: string) => void;
+}
+
+export default function Product({onRequestStatusChange}: ProductProps): JSX.Element {
   const dispatch = useAppDispatch();
   const {id} = useParams();
   const product = useAppSelector(getProductInfo);
@@ -21,23 +25,31 @@ export default function Product(): JSX.Element {
   const reviews = useAppSelector(getReviews);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [productInfoRequestStatus, setProductInfoRequestStatus] = useState<string>(RequestStatus.Fulfilled);
 
   const checkProductId = () => Boolean(product && id && product.id === +id);
 
   useEffect(() => {
     document.title = DocumentTitle.Product;
+    onRequestStatusChange(RequestStatus.Fulfilled);
 
-    if (id) {
-      dispatch(fetchProductInfoAction(id));
-      dispatch(fetchSimilarProductsAction(id));
-      dispatch(fetchProductReviewsAction(id));
-    }
-  }, [dispatch, id]);
+    const fetchData = async () => {
+      if (id) {
+        const response = await dispatch(fetchProductInfoAction(id));
+        dispatch(fetchSimilarProductsAction(id));
+        dispatch(fetchProductReviewsAction(id));
+
+        onRequestStatusChange(response.meta.requestStatus);
+      }
+    };
+
+    fetchData();
+  }, [dispatch, id, onRequestStatusChange]);
 
   return (
     <main>
       <div className="page-content">
-        <Breadcrumbs productName={product ? product.name : null}/>
+        {product && <Breadcrumbs productName={product.name}/>}
         <div className="page-content__section">
           {product && checkProductId() ? <ProductInfo product={product}/> : <LoadingLayout />}
         </div>

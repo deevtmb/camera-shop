@@ -41,3 +41,8 @@ export const DocumentTitle = {
   Catalog: 'Каталог - Фотошоп',
   Product: 'Продукт - Фотошоп',
 } as const;
+
+export const RequestStatus = {
+  Fulfilled: 'fulfilled',
+  Rejected: 'rejected',
+} as const;

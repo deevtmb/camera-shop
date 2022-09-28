@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, ProductTab } from '../../const';
 import { Product } from '../../types/product';
 import { getFormatedPrice } from '../../utils/common';
 
@@ -45,7 +45,7 @@ export default function CatalogCard({product, isActive = false}: CatalogCardProp
       </div>
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">Купить</button>
-        <Link className="btn btn--transparent" to={`${AppRoute.Product}${id}`}>Подробнее</Link>
+        <Link className="btn btn--transparent" to={`${AppRoute.Product}${id}/${ProductTab.Characteristics}`}>Подробнее</Link>
       </div>
     </div>
   );

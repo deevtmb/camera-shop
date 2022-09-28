@@ -9,7 +9,7 @@ describe('Component: Product', () => {
     render(
       <Provider store={fakeStore}>
         <MemoryRouter>
-          <Product />
+          <Product onRequestStatusChange={jest.fn()}/>
         </MemoryRouter>
       </Provider>
     );

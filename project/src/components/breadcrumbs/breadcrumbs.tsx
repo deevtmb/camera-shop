@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { AppRoute } from '../../const';
 
 type BreadcrumbsProps = {
-  productName?: string | null;
+  productName?: string;
 }
 
 export default function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Element {

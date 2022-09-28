@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
+import { RequestStatus } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchProductReviewsAction, postReviewAction } from '../../store/api-actions';
 
@@ -9,7 +10,7 @@ type ModalFormProps = {
 }
 
 export default function ModalForm({onModalClose, onSuccessSubmit, productId}: ModalFormProps): JSX.Element {
-  const SUCCESS_SUBMIT_STATUS = 'fulfilled';
+  const MIN_REVIEW_LENGTH = 5;
   const dispatch = useAppDispatch();
 
   const [reviewPost, setReviewPost] = useState({
@@ -27,9 +28,9 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
     evt.preventDefault();
     setIsFormChecked(true);
 
-    if (Object.values(reviewPost).every((value) => Boolean(value))) {
+    if (Object.values(reviewPost).every((value) => Boolean(value)) && reviewPost.review.length >= MIN_REVIEW_LENGTH) {
       const response = await dispatch(postReviewAction(reviewPost));
-      if (response.meta.requestStatus === SUCCESS_SUBMIT_STATUS) {
+      if (response.meta.requestStatus === RequestStatus.Fulfilled) {
         dispatch(fetchProductReviewsAction(String(productId)));
         onSuccessSubmit();
       }
@@ -73,7 +74,7 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-name" placeholder="Введите ваше имя" required onChange={(evt) => setReviewPost({...reviewPost, userName: evt.currentTarget.value})} />
+                <input type="text" name="user-name" placeholder="Введите ваше имя" onChange={(evt) => setReviewPost({...reviewPost, userName: evt.currentTarget.value})} />
               </label>
               <p className="custom-input__error">Нужно указать имя</p>
             </div>
@@ -84,7 +85,7 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-plus" placeholder="Основные преимущества товара" required onChange={(evt) => setReviewPost({...reviewPost, advantage: evt.currentTarget.value})} />
+                <input type="text" name="user-plus" placeholder="Основные преимущества товара" onChange={(evt) => setReviewPost({...reviewPost, advantage: evt.currentTarget.value})} />
               </label>
               <p className="custom-input__error">Нужно указать достоинства</p>
             </div>
@@ -95,11 +96,11 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-minus" placeholder="Главные недостатки товара" required onChange={(evt) => setReviewPost({...reviewPost, disadvantage: evt.currentTarget.value})} />
+                <input type="text" name="user-minus" placeholder="Главные недостатки товара" onChange={(evt) => setReviewPost({...reviewPost, disadvantage: evt.currentTarget.value})} />
               </label>
               <p className="custom-input__error">Нужно указать недостатки</p>
             </div>
-            <div className={`custom-textarea form-review__item ${(!reviewPost.review && isFormChecked) ? 'is-invalid' : ''}`}>
+            <div className={`custom-textarea form-review__item ${(!(reviewPost.review.length >= MIN_REVIEW_LENGTH) && isFormChecked) ? 'is-invalid' : ''}`}>
               <label>
                 <span className="custom-textarea__label">Комментарий
                   <svg width="9" height="9" aria-hidden="true">
@@ -108,7 +109,6 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                 </span>
                 <textarea
                   name="user-comment"
-                  minLength={5}
                   placeholder="Поделитесь своим опытом покупки"
                   onChange={(evt) => setReviewPost({...reviewPost, review: evt.currentTarget.value})}
                 >
