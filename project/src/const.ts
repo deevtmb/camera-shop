@@ -57,7 +57,37 @@ export const SortOrder = {
   Down: 'desc'
 } as const;
 
-export const SortParams = {
+export const SortParam = {
   Sort: '_sort',
   Order: '_order',
+} as const;
+
+export const FilterParam = {
+  PriceFrom: 'price_gte',
+  PriceTo: 'price_lte',
+  Category: 'category',
+  Class: 'type',
+  Level: 'level',
+} as const;
+
+export const ProductCategory = {
+  Photo: 'Фотоаппарат',
+  Video: 'Видеокамера',
+} as const;
+
+export const ProductClass = {
+  Digital: 'Цифровая',
+  Film: 'Плёночная',
+  Collection: 'Коллекционная',
+  Instant: 'Моментальная',
+} as const;
+
+export const ProductLevel = {
+  Beginner: 'Нулевой',
+  Regular: 'Любительский',
+  Professional: 'Профессиональный',
+} as const;
+
+export const KeyName = {
+  Enter: 'Enter',
 } as const;

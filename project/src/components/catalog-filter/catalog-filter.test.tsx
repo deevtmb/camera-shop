@@ -4,7 +4,7 @@ import CatalogFilter from './catalog-filter';
 describe('Component: CatalogFilter', () => {
   it ('Case: rendered correctly', () => {
     render(
-      <CatalogFilter />
+      <CatalogFilter onFilterChange={jest.fn()} onFilterReset={jest.fn()} searchParams='' productPrices={[]} />
     );
 
     expect(screen.getByText(/Категория/i)).toBeInTheDocument();

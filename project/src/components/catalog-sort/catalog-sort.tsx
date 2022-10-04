@@ -1,10 +1,11 @@
 import { SyntheticEvent } from 'react';
-import { SortOrder, SortParams, SortType } from '../../const';
+import { SortOrder, SortParam, SortType } from '../../const';
 
 type CatalogSortProps = {
   onSortChange: (evt: SyntheticEvent<HTMLInputElement>) => void;
   searchParams: string;
 }
+
 export default function CatalogSort({onSortChange, searchParams}: CatalogSortProps): JSX.Element {
   return (
     <div className="catalog-sort">
@@ -17,9 +18,10 @@ export default function CatalogSort({onSortChange, searchParams}: CatalogSortPro
                 type="radio"
                 id="sortPrice"
                 name="sort"
+                onClick={onSortChange}
                 onChange={onSortChange}
                 data-sort-type={SortType.Price}
-                data-sort-param={SortParams.Sort}
+                data-sort-param={SortParam.Sort}
                 checked={searchParams.includes(SortType.Price)}
               />
               <label htmlFor="sortPrice">по цене</label>
@@ -29,9 +31,10 @@ export default function CatalogSort({onSortChange, searchParams}: CatalogSortPro
                 type="radio"
                 id="sortPopular"
                 name="sort"
+                onClick={onSortChange}
                 onChange={onSortChange}
                 data-sort-type={SortType.Rating}
-                data-sort-param={SortParams.Sort}
+                data-sort-param={SortParam.Sort}
                 checked={searchParams.includes(SortType.Rating)}
               />
               <label htmlFor="sortPopular">по популярности</label>
@@ -46,7 +49,8 @@ export default function CatalogSort({onSortChange, searchParams}: CatalogSortPro
                 aria-label="По возрастанию"
                 onChange={onSortChange}
                 data-sort-type={SortOrder.Up}
-                data-sort-param={SortParams.Order}
+                data-sort-param={SortParam.Order}
+                checked={searchParams.includes(SortOrder.Up)}
               />
               <label htmlFor="up">
                 <svg width="16" height="14" aria-hidden="true">
@@ -62,7 +66,8 @@ export default function CatalogSort({onSortChange, searchParams}: CatalogSortPro
                 aria-label="По убыванию"
                 onChange={onSortChange}
                 data-sort-type={SortOrder.Down}
-                data-sort-param={SortParams.Order}
+                data-sort-param={SortParam.Order}
+                checked={searchParams.includes(SortOrder.Down)}
               />
               <label htmlFor="down">
                 <svg width="16" height="14" aria-hidden="true">

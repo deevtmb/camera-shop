@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppRoute, ProductTab } from '../../const';
+import { AppRoute, KeyName, ProductTab } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { searchProducts } from '../../store/api-actions';
 import { getSearchedProducts } from '../../store/products-data/selectors';
 
 export default function HeaderSearch(): JSX.Element {
-  const ENTER_KEY = 'Enter';
   const [search, setSearch] = useState('');
   const dispatch = useAppDispatch();
   const products = useAppSelector(getSearchedProducts);
@@ -42,7 +41,7 @@ export default function HeaderSearch(): JSX.Element {
               key={id}
               onClick={() => navigate(`${AppRoute.Product}${id}/${ProductTab.Characteristics}`)}
               onKeyDown={(evt) => {
-                if (evt.key === ENTER_KEY) {
+                if (evt.key === KeyName.Enter) {
                   navigate(`${AppRoute.Product}${id}/${ProductTab.Characteristics}`);
                 }
               }}
