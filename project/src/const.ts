@@ -46,3 +46,18 @@ export const RequestStatus = {
   Fulfilled: 'fulfilled',
   Rejected: 'rejected',
 } as const;
+
+export const SortType = {
+  Price: 'price',
+  Rating: 'rating',
+} as const;
+
+export const SortOrder = {
+  Up: 'asc',
+  Down: 'desc'
+} as const;
+
+export const SortParams = {
+  Sort: '_sort',
+  Order: '_order',
+} as const;

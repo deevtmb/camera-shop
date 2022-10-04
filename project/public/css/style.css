@@ -1681,7 +1681,7 @@ button,
   opacity: 1;
 }
 
-.form-search.list-opened .form-search__reset {
+.form-search .form-search__reset {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -2022,6 +2022,11 @@ button,
   margin-right: 7px;
 }
 
+.catalog-sort__btn-text input[type="radio"]:focus + label {
+  color: #7575e2;
+  background-color: #e8e8fa;
+}
+
 .catalog-sort__btn-text input[type="radio"]:checked + label {
   color: #ffffff;
   background-color: #7575e2;
@@ -2037,11 +2042,6 @@ button,
 .catalog-sort__btn-text input[type="radio"]:checked:disabled + label {
   color: #f8f8f8;
   background-color: #dddddd;
-}
-
-.catalog-sort__btn-text input[type="radio"]:focus + label {
-  color: #7575e2;
-  background-color: #e8e8fa;
 }
 
 .catalog-sort__btn {
@@ -2098,6 +2098,11 @@ button,
   appearance: none;
 }
 
+.catalog-sort__btn input[type="radio"]:focus + label {
+  color: #7575e2;
+  background-color: #e8e8fa;
+}
+
 .catalog-sort__btn input[type="radio"]:checked + label {
   color: #ffffff;
   background-color: #7575e2;
@@ -2114,11 +2119,6 @@ button,
   color: #f8f8f8;
   background-color: #dddddd;
   pointer-events: none;
-}
-
-.catalog-sort__btn input[type="radio"]:focus + label {
-  color: #7575e2;
-  background-color: #e8e8fa;
 }
 
 .form-checkbox {

@@ -9,6 +9,7 @@ describe('Reducer test: productsData', () => {
     products: [],
     promoProduct: null,
     similarProducts: [],
+    searchedProducts: [],
     productInfo: null,
     isDataLoading: false,
   };

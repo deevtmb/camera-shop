@@ -7,10 +7,18 @@ import { Review } from '../types/review';
 import { ReviewPost } from '../types/review-post';
 
 
-export const fetchProductsAction = createAsyncThunk<Product[], undefined, {extra: AxiosInstance}>(
+export const fetchProductsAction = createAsyncThunk<Product[], string | undefined, {extra: AxiosInstance}>(
   'data/fetchProducts',
-  async (_args, {extra: api}) => {
-    const {data} = await api.get<Product[]>(APIRoute.Products);
+  async (params = '', {extra: api}) => {
+    const {data} = await api.get<Product[]>(`${APIRoute.Products}?${params}`);
+    return data;
+  }
+);
+
+export const searchProducts = createAsyncThunk<Product[], string, {extra: AxiosInstance}>(
+  'data/searchProducts',
+  async (search, {extra: api}) => {
+    const {data} = await api.get<Product[]>(`${APIRoute.Products}?name_like=${search}`);
     return data;
   }
 );

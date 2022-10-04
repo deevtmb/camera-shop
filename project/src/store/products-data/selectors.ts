@@ -5,6 +5,8 @@ import { State } from '../../types/state';
 
 export const getProducts = (state: State): Product[] => state[NameSpace.Products].products;
 
+export const getSearchedProducts = (state: State): Product[] => state[NameSpace.Products].searchedProducts;
+
 export const getPromoProduct = (state: State): PromoProduct | null => state[NameSpace.Products].promoProduct;
 
 export const getSimilarProducts = (state: State): Product[] => state[NameSpace.Products].similarProducts;

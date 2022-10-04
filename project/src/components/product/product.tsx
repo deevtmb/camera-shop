@@ -25,7 +25,6 @@ export default function Product({onRequestStatusChange}: ProductProps): JSX.Elem
   const reviews = useAppSelector(getReviews);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [productInfoRequestStatus, setProductInfoRequestStatus] = useState<string>(RequestStatus.Fulfilled);
 
   const checkProductId = () => Boolean(product && id && product.id === +id);
 

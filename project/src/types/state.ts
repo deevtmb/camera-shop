@@ -11,6 +11,7 @@ export type ProductsData = {
   products: Product[];
   promoProduct: PromoProduct | null;
   similarProducts: Product[];
+  searchedProducts: Product[];
   productInfo: Product | null;
   isDataLoading: boolean;
 };

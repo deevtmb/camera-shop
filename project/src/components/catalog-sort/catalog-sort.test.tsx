@@ -4,7 +4,7 @@ import CatalogSort from './catalog-sort';
 describe('Component: CatalogSort', () => {
   it('Case: rendered correctly', () => {
     render(
-      <CatalogSort />
+      <CatalogSort onSortChange={jest.fn()} searchParams='' />
     );
 
     expect(screen.getByText(/Сортировать:/i)).toBeInTheDocument();
