@@ -2531,6 +2531,10 @@ button,
   background-color: #f8f8f8;
 }
 
+.pagination__link:hover {
+  cursor: pointer;
+}
+
 .pagination__link:disabled .pagination__link--active {
   background-color: #dddddd;
 }

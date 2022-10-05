@@ -6,7 +6,7 @@ import { State } from '../types/state';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { makeFakePostReview, makeFakeProduct, makeFakeProducts, makeFakeReviews } from '../mocks/mocks';
 import { APIRoute } from '../const';
-import { fetchProductInfoAction, fetchProductReviewsAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction, postReviewAction } from './api-actions';
+import { fetchProductInfoAction, fetchProductReviewsAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction, postReviewAction, searchProducts } from './api-actions';
 
 describe('Test: async api-actions', () => {
   const api = createAPI();
@@ -23,8 +23,8 @@ describe('Test: async api-actions', () => {
     const mockProducts = makeFakeProducts(20);
     const mockProduct = makeFakeProduct();
 
-    it('Case: dispatch fetchProducts action with GET request to /cameras', async () => {
-      mockAPI.onGet(APIRoute.Products).reply(200, mockProducts);
+    it('Case: dispatch fetchProducts action with GET request to /cameras?{params}', async () => {
+      mockAPI.onGet(`${APIRoute.Products}?`).reply(200, mockProducts);
 
       const store = mockStore();
 
@@ -35,6 +35,21 @@ describe('Test: async api-actions', () => {
       expect(actions).toEqual([
         fetchProductsAction.pending.type,
         fetchProductsAction.fulfilled.type
+      ]);
+    });
+
+    it('Case: dispatch searchProducts action with GET request to /cameras?name_like={search}', async () => {
+      mockAPI.onGet(`${APIRoute.Products}?name_like=${mockProduct.name}`).reply(200, mockProducts);
+
+      const store = mockStore();
+
+      await store.dispatch(searchProducts(mockProduct.name));
+
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        searchProducts.pending.type,
+        searchProducts.fulfilled.type
       ]);
     });
 

@@ -18,7 +18,7 @@ export default function HeaderSearch(): JSX.Element {
   }, [search, dispatch]);
 
   return (
-    <div className={`form-search ${products.length && search ? 'list-opened' : ''}`}>
+    <div className={`form-search ${search.length > 0 ? 'list-opened' : ''}`}>
       <form>
         <label>
           <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
@@ -32,9 +32,8 @@ export default function HeaderSearch(): JSX.Element {
             onChange={(evt) => setSearch(evt.currentTarget.value)}
           />
         </label>
-        {!!products.length &&
         <ul className="form-search__select-list">
-          {products.map(({name, id}) => (
+          {products.length ? products.map(({name, id}) => (
             <li
               className="form-search__select-item"
               tabIndex={0}
@@ -48,8 +47,8 @@ export default function HeaderSearch(): JSX.Element {
             >
               {name}
             </li>
-          ))}
-        </ul>}
+          )) : <li className="form-search__select-item">Товар не найден</li>}
+        </ul>
         {search &&
           <button className="form-search__reset" type="reset">
             <svg width="10" height="10" aria-hidden="true">

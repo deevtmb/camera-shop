@@ -22,7 +22,7 @@ export default function CatalogSort({onSortChange, searchParams}: CatalogSortPro
                 onChange={onSortChange}
                 data-sort-type={SortType.Price}
                 data-sort-param={SortParam.Sort}
-                checked={searchParams.includes(SortType.Price)}
+                checked={searchParams.includes(`=${SortType.Price}`)}
               />
               <label htmlFor="sortPrice">по цене</label>
             </div>

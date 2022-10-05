@@ -1,6 +1,6 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { DocumentTitle, FilterParam, SortParam, SortType } from '../../const';
+import { DocumentTitle, SortParam, SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchProductsAction } from '../../store/api-actions';
 import { getLoadingStatus, getProducts, getPromoProduct } from '../../store/products-data/selectors';
@@ -15,6 +15,7 @@ import Pagination from '../pagination/pagination';
 export default function Catalog(): JSX.Element {
   const PRODUCTS_PER_VIEW = 9;
   const DEFAULT_PAGE = 1;
+  const pageParam = 'page';
 
   const dispatch = useAppDispatch();
   const products = useAppSelector(getProducts);
@@ -36,34 +37,9 @@ export default function Catalog(): JSX.Element {
         !searchParams.toString().includes(SortParam.Sort)) {
         searchParams.set(SortParam.Sort, SortType.Price);
       }
-      setSearchParams(searchParams);
-    }
-  };
-
-  const onFilterChange = (evt: SyntheticEvent<HTMLInputElement>) => {
-    const target = evt.currentTarget;
-
-    if (target.dataset.filterParam && target.dataset.filterData) {
-      const data = target.dataset.filterData;
-      const parameter = target.dataset.filterParam;
-
-      if (target.checked && !searchParams.getAll(parameter).includes(data)) {
-        searchParams.append(parameter, data);
-      } else if (target.type === 'number') {
-        searchParams.set(parameter, data);
-      } else {
-        const selectedParams = [...searchParams.getAll(parameter)];
-        searchParams.delete(parameter);
-        selectedParams.filter((value) => value !== data).forEach((value) => searchParams.append(parameter, value));
-      }
 
       setSearchParams(searchParams);
     }
-  };
-
-  const onFilterReset = () => {
-    Object.values(FilterParam).forEach((value) => searchParams.delete(value));
-    setSearchParams(searchParams);
   };
 
   useEffect(() => {
@@ -71,6 +47,10 @@ export default function Catalog(): JSX.Element {
   }, []);
 
   useEffect(() => {
+    const page = searchParams.get(pageParam);
+    if (page) {
+      setCurrentPage(+page);
+    }
     dispatch(fetchProductsAction(searchParams.toString()));
   }, [dispatch, searchParams]);
 
@@ -84,12 +64,7 @@ export default function Catalog(): JSX.Element {
             <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
             <div className="page-content__columns">
               <div className="catalog__aside">
-                <CatalogFilter
-                  onFilterChange={onFilterChange}
-                  onFilterReset={onFilterReset}
-                  searchParams={searchParams.toString()}
-                  productPrices={productPrices}
-                />
+                <CatalogFilter productPrices={productPrices} />
               </div>
               <div className="catalog__content">
                 <CatalogSort onSortChange={onSortChange} searchParams={searchParams.toString() }/>

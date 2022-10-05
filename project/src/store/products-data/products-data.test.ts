@@ -1,7 +1,7 @@
 import { makeFakeProduct, makeFakeProducts } from '../../mocks/mocks';
 import { Product } from '../../types/product';
 import { ProductsData } from '../../types/state';
-import { fetchProductInfoAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction } from '../api-actions';
+import { fetchProductInfoAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction, searchProducts } from '../api-actions';
 import { productsData } from './products-data';
 
 describe('Reducer test: productsData', () => {
@@ -30,6 +30,11 @@ describe('Reducer test: productsData', () => {
   it('Case: load products when fetchProducts action fulfilled', () => {
     expect(productsData.reducer(state, {type: fetchProductsAction.fulfilled.type, payload: products}))
       .toEqual({...state, products: products, isDataLoading: false});
+  });
+
+  it('Case: load products when searchProducts action fulfilled', () => {
+    expect(productsData.reducer(state, {type: searchProducts.fulfilled.type, payload: products}))
+      .toEqual({...state, searchedProducts: products});
   });
 
   it('Case: load promo product to state when fetchPromoProduct action fulfilled', () => {

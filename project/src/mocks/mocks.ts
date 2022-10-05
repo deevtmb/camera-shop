@@ -57,6 +57,7 @@ export const fakeStore = mockStore({
     products: makeFakeProducts(20),
     promoProduct: makeFakeProduct(),
     similarProducts: makeFakeProducts(6),
+    searchedProducts: makeFakeProducts(20),
     productInfo: makeFakeProduct(),
     isDataLoading: false,
   },
