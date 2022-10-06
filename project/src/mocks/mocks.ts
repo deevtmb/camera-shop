@@ -60,6 +60,7 @@ export const fakeStore = mockStore({
     searchedProducts: makeFakeProducts(20),
     productInfo: makeFakeProduct(),
     isDataLoading: false,
+    isSearchingProducts: false,
   },
   REVIEWS_DATA: {
     reviews: makeFakeReviews(15),

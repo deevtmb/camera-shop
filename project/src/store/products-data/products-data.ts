@@ -10,6 +10,7 @@ const initialState: ProductsData = {
   searchedProducts: [],
   productInfo: null,
   isDataLoading: false,
+  isSearchingProducts: false
 };
 
 export const productsData = createSlice({
@@ -28,7 +29,14 @@ export const productsData = createSlice({
         state.products = action.payload;
         state.isDataLoading = false;
       })
+      .addCase(searchProducts.pending, (state) => {
+        state.isSearchingProducts = true;
+      })
+      .addCase(searchProducts.rejected, (state) => {
+        state.isSearchingProducts = false;
+      })
       .addCase(searchProducts.fulfilled, (state, action) => {
+        state.isSearchingProducts = false;
         state.searchedProducts = action.payload;
       })
       .addCase(fetchPromoProductAction.fulfilled, (state, action) => {

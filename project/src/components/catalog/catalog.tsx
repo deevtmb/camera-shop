@@ -38,7 +38,9 @@ export default function Catalog(): JSX.Element {
         searchParams.set(SortParam.Sort, SortType.Price);
       }
 
-      setSearchParams(searchParams);
+      if (products.length) {
+        setSearchParams(searchParams);
+      }
     }
   };
 

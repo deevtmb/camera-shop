@@ -14,6 +14,7 @@ export type ProductsData = {
   searchedProducts: Product[];
   productInfo: Product | null;
   isDataLoading: boolean;
+  isSearchingProducts: boolean;
 };
 
 export type ReviewsData = {

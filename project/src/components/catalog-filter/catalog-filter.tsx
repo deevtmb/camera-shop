@@ -1,8 +1,9 @@
-import { FocusEvent, KeyboardEvent, SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FilterParam, KeyName, ProductCategory, ProductClass, ProductLevel } from '../../const';
+import { FilterParam, ProductCategory, ProductClass, ProductLevel } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import { getLoadingStatus } from '../../store/products-data/selectors';
+import { debounce } from '../../utils/common';
 
 type CatalogFilterProps = {
   productPrices: number[];
@@ -20,9 +21,11 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
   const [isFilterChanged, setIsFilterChanged] = useState(false);
 
   const [price, setPrice] = useState({
-    min: productPrices.length ? Math.min(...productPrices) : '',
-    max: productPrices.length ? Math.max(...productPrices) : '',
+    min: productPrices.length ? Math.min(...productPrices) : 0,
+    max: productPrices.length ? Math.max(...productPrices) : 0,
   });
+
+  const optimizedFilter = useMemo(() => debounce(setSearchParams), [setSearchParams]);
 
   const handleFilterChange = (evt: SyntheticEvent<HTMLInputElement>) => {
     const target = evt.currentTarget;
@@ -39,19 +42,26 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
         selectedParams.filter((value) => value !== data).forEach((value) => searchParams.append(parameter, value));
       }
 
-      if (minPriceRef.current?.dataset.filterData && maxPriceRef.current?.dataset.filterData) {
-        searchParams.set(FilterParam.PriceFrom, minPriceRef.current.dataset.filterData);
+      if (minPriceRef.current && maxPriceRef.current && target.type === numberInput) {
+        searchParams.set(
+          FilterParam.PriceFrom,
+          String(Math.max(0, +minPriceRef.current.value))
+        );
         searchParams.set(
           FilterParam.PriceTo,
-          String(Math.max(+minPriceRef.current.dataset.filterData, +maxPriceRef.current.dataset.filterData))
+          String(Math.max(0, +minPriceRef.current.value, +maxPriceRef.current.value))
         );
+        setPrice({
+          min: +minPriceRef.current.value < 0 || !minPriceRef.current.value ? 0 : +minPriceRef.current.value,
+          max: +maxPriceRef.current.value < 0 || !maxPriceRef.current.value ? 0 : +maxPriceRef.current.value,
+        });
       }
 
       if (searchParams.has(pageParam)) {
         searchParams.set(pageParam, String(DEFAULT_PAGE));
       }
       setIsFilterChanged(true);
-      setSearchParams(searchParams);
+      optimizedFilter(searchParams);
     }
   };
 
@@ -66,33 +76,13 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
     }
   };
 
-  const handlePriceEnterKeydown = (evt: KeyboardEvent<HTMLInputElement>) => {
-    if (
-      evt.key === KeyName.Enter &&
-      (searchParams.get(FilterParam.PriceFrom) !== String(price.min) ||
-        searchParams.get(FilterParam.PriceTo) !== String(price.max))
-    ) {
-      handleFilterChange(evt);
-      evt.currentTarget.blur();
-    }
-  };
-
-  const handlePriceInputBlur = (evt: FocusEvent<HTMLInputElement>) => {
-    if (
-      searchParams.get(FilterParam.PriceFrom) !== String(price.min) ||
-      searchParams.get(FilterParam.PriceTo) !== String(price.max)
-    ) {
-      handleFilterChange(evt);
-    }
-  };
-
   useEffect(() => {
     const priceGte = searchParams.get(FilterParam.PriceFrom);
     const priceLte = searchParams.get(FilterParam.PriceTo);
 
     if (minPriceRef.current && maxPriceRef.current && !productPrices.length) {
       setPrice({
-        min: priceGte ? priceGte : minPriceRef.current.value,
+        min: priceGte ? +priceGte : +minPriceRef.current.value,
         max:
           priceLte && priceGte
             ? Math.max(+priceGte, +priceLte)
@@ -100,20 +90,22 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
       });
     } else if (productPrices.length) {
       setPrice({
-        min: isDataLoading && priceGte ? priceGte : Math.min(...productPrices),
-        max: isDataLoading && priceLte ? priceLte : Math.max(...productPrices),
+        min: isDataLoading && priceGte ? +priceGte : Math.min(...productPrices),
+        max: isDataLoading && priceLte ? +priceLte : Math.max(...productPrices),
       });
-    }
-
-    if (minPriceRef.current && maxPriceRef.current && productPrices.length) {
-      searchParams.set(FilterParam.PriceFrom, minPriceRef.current.value);
-      searchParams.set(FilterParam.PriceTo, maxPriceRef.current.value);
     }
 
     if (Object.values(FilterParam).some((value) => searchParams.has(value))) {
       setIsFilterChanged(true);
     }
   }, [searchParams, isDataLoading, productPrices]);
+
+  useEffect(() => {
+    if (minPriceRef.current && maxPriceRef.current && productPrices.length) {
+      searchParams.set(FilterParam.PriceFrom, String(price.min));
+      searchParams.set(FilterParam.PriceTo, String(Math.max(+price.min, +price.max)));
+    }
+  }, [searchParams, productPrices, price]);
 
   return (
     <div className="catalog-filter">
@@ -130,10 +122,8 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
                   placeholder="от"
                   value={price.min}
                   data-filter-param={FilterParam.PriceFrom}
-                  data-filter-data={price.min}
-                  onChange={(evt) => setPrice({ ...price, min: +evt.target.value >= 0 ? +evt.target.value : 0 })}
-                  onBlur={handlePriceInputBlur}
-                  onKeyDown={handlePriceEnterKeydown}
+                  data-filter-data={minPriceRef.current?.value}
+                  onChange={handleFilterChange}
                   ref={minPriceRef}
                 />
               </label>
@@ -146,10 +136,8 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
                   placeholder="до"
                   value={price.max}
                   data-filter-param={FilterParam.PriceTo}
-                  data-filter-data={+price.max > +price.min ? price.max : price.min}
-                  onChange={(evt) => setPrice({ ...price, max: +evt.target.value >= 0 ? +evt.target.value : 0 })}
-                  onBlur={handlePriceInputBlur}
-                  onKeyDown={handlePriceEnterKeydown}
+                  data-filter-data={maxPriceRef.current?.value}
+                  onChange={handleFilterChange}
                   ref={maxPriceRef}
                 />
               </label>
@@ -166,7 +154,7 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
                 onChange={handleFilterChange}
                 data-filter-param={FilterParam.Category}
                 data-filter-data={ProductCategory.Photo}
-                checked={decodeURI(searchParams.toString()).includes(ProductCategory.Photo)}
+                defaultChecked={decodeURI(searchParams.toString()).includes(ProductCategory.Photo)}
               />
               <span className="custom-checkbox__icon"></span>
               <span className="custom-checkbox__label">Фотокамера</span>
@@ -180,7 +168,7 @@ export default function CatalogFilter({productPrices}: CatalogFilterProps): JSX.
                 onChange={handleFilterChange}
                 data-filter-param={FilterParam.Category}
                 data-filter-data={ProductCategory.Video}
-                checked={decodeURI(searchParams.toString()).includes(ProductCategory.Video)}
+                defaultChecked={decodeURI(searchParams.toString()).includes(ProductCategory.Video)}
               />
               <span className="custom-checkbox__icon"></span>
               <span className="custom-checkbox__label">Видеокамера</span>
