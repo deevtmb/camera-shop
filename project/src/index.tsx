@@ -4,12 +4,13 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import App from './components/app/app';
 import { store } from './store';
-import { fetchPromoProductAction } from './store/api-actions';
+import { fetchProductsAction, fetchPromoProductAction } from './store/api-actions';
 import {ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ScrollToTop from './components/scroll-to-top/scroll-to-top';
 
 store.dispatch(fetchPromoProductAction());
+store.dispatch(fetchProductsAction(new URLSearchParams()));
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,

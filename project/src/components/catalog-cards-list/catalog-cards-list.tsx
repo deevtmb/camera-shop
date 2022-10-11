@@ -8,7 +8,7 @@ type CatalogCardsListProps = {
 export default function CatalogCardsList({products}: CatalogCardsListProps): JSX.Element {
   if (!products.length) {
     return (
-      <div style={{marginTop: '5%'}}>
+      <div className="catalog__empty">
         <h2>По вашему запросу ничего не найдено.</h2>
         <p>Попробуйте изменить параметры поиска.</p>
       </div>

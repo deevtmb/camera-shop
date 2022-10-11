@@ -91,3 +91,13 @@ export const ProductLevel = {
 export const KeyName = {
   Enter: 'Enter',
 } as const;
+
+export const NavigateParam = {
+  Page: 'page'
+} as const;
+
+export const EventType = {
+  Keydown: 'keydown',
+  Blur: 'blur',
+  Change: 'change'
+} as const;

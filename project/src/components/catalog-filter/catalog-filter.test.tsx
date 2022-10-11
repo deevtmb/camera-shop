@@ -9,7 +9,7 @@ describe('Component: CatalogFilter', () => {
     render(
       <Provider store={fakeStore}>
         <MemoryRouter>
-          <CatalogFilter productPrices={[]} />
+          <CatalogFilter />
         </MemoryRouter>
       </Provider>
     );

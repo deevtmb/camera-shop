@@ -1,17 +1,44 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute } from '../const';
+import { APIRoute, FilterParam } from '../const';
 import { Product } from '../types/product';
 import { PromoProduct } from '../types/promo-product';
 import { Review } from '../types/review';
 import { ReviewPost } from '../types/review-post';
+import { PriceRange } from '../types/state';
 
 
-export const fetchProductsAction = createAsyncThunk<Product[], string | undefined, {extra: AxiosInstance}>(
+export const fetchProductsAction = createAsyncThunk<
+{products: Product[], productsPriceRange: PriceRange, userPriceRange: PriceRange},
+URLSearchParams,
+{extra: AxiosInstance}
+>(
   'data/fetchProducts',
-  async (params = '', {extra: api}) => {
-    const {data} = await api.get<Product[]>(`${APIRoute.Products}?${params}`);
-    return data;
+  async (params, {extra: api}) => {
+    let [minUserPrice, maxUserPrice]: PriceRange = [params.get(FilterParam.PriceFrom), params.get(FilterParam.PriceTo)];
+    let productsPriceRange: PriceRange = [null, null];
+    maxUserPrice = ((maxUserPrice && minUserPrice) && (+minUserPrice > +maxUserPrice)) ? minUserPrice : maxUserPrice;
+
+    if (maxUserPrice) {
+      params.set(FilterParam.PriceTo, maxUserPrice);
+    }
+
+    const {data} = await api.get<Product[]>(`${APIRoute.Products}?${params.toString()}`);
+
+    if (data.length) {
+      const productPrices = data.map(({price}) => price);
+      productsPriceRange = [String(Math.min(...productPrices)), String(Math.max(...productPrices))];
+      [minUserPrice, maxUserPrice] = [
+        minUserPrice && String(Math.min(...productPrices)),
+        maxUserPrice && String(Math.max(...productPrices))
+      ];
+    }
+
+    return {
+      products: data,
+      productsPriceRange: productsPriceRange,
+      userPriceRange: [minUserPrice, maxUserPrice]
+    };
   }
 );
 

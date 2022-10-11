@@ -10,7 +10,9 @@ const initialState: ProductsData = {
   searchedProducts: [],
   productInfo: null,
   isDataLoading: false,
-  isSearchingProducts: false
+  isSearchingProducts: false,
+  productsPriceRange: [null, null],
+  userPriceRange: [null, null],
 };
 
 export const productsData = createSlice({
@@ -26,7 +28,9 @@ export const productsData = createSlice({
         state.isDataLoading = false;
       })
       .addCase(fetchProductsAction.fulfilled, (state, action) => {
-        state.products = action.payload;
+        state.productsPriceRange = action.payload.productsPriceRange;
+        state.userPriceRange = action.payload.userPriceRange;
+        state.products = action.payload.products;
         state.isDataLoading = false;
       })
       .addCase(searchProducts.pending, (state) => {

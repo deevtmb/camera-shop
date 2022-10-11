@@ -1,7 +1,7 @@
 import { NameSpace } from '../../const';
 import { Product } from '../../types/product';
 import { PromoProduct } from '../../types/promo-product';
-import { State } from '../../types/state';
+import { PriceRange, State } from '../../types/state';
 
 export const getProducts = (state: State): Product[] => state[NameSpace.Products].products;
 
@@ -16,3 +16,7 @@ export const getProductInfo = (state: State): Product | null => state[NameSpace.
 export const getLoadingStatus = (state: State): boolean => state[NameSpace.Products].isDataLoading;
 
 export const geatSearchingStatus = (state: State): boolean => state[NameSpace.Products].isSearchingProducts;
+
+export const getProductsPriceRange = (state: State): PriceRange => state[NameSpace.Products].productsPriceRange;
+
+export const getUserPriceRange = (state: State): PriceRange => state[NameSpace.Products].userPriceRange;

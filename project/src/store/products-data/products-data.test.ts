@@ -15,6 +15,8 @@ describe('Reducer test: productsData', () => {
     productInfo: null,
     isDataLoading: false,
     isSearchingProducts: false,
+    productsPriceRange: [null, null],
+    userPriceRange: [null, null],
   };
 
   const product: Product = makeFakeProduct();

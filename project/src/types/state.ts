@@ -7,6 +7,8 @@ export type State = ReturnType<typeof store.getState>;
 
 export type AppDispatch = typeof store.dispatch;
 
+export type PriceRange = [string | null, string | null]
+
 export type ProductsData = {
   products: Product[];
   promoProduct: PromoProduct | null;
@@ -15,6 +17,8 @@ export type ProductsData = {
   productInfo: Product | null;
   isDataLoading: boolean;
   isSearchingProducts: boolean;
+  productsPriceRange: PriceRange;
+  userPriceRange: PriceRange;
 };
 
 export type ReviewsData = {

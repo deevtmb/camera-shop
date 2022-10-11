@@ -28,7 +28,7 @@ describe('Test: async api-actions', () => {
 
       const store = mockStore();
 
-      await store.dispatch(fetchProductsAction());
+      await store.dispatch(fetchProductsAction(new URLSearchParams()));
 
       const actions = store.getActions().map(({type}) => type);
 
