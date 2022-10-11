@@ -61,6 +61,8 @@ export const fakeStore = mockStore({
     productInfo: makeFakeProduct(),
     isDataLoading: false,
     isSearchingProducts: false,
+    productsPriceRange: [null, null],
+    userPriceRange: [null, null],
   },
   REVIEWS_DATA: {
     reviews: makeFakeReviews(15),

@@ -33,7 +33,9 @@ describe('Reducer test: productsData', () => {
   });
 
   it('Case: load products when fetchProducts action fulfilled', () => {
-    expect(productsData.reducer(state, {type: fetchProductsAction.fulfilled.type, payload: products}))
+    expect(productsData.reducer(state, {type: fetchProductsAction.fulfilled.type, payload: {
+      products, userPriceRange: [null, null], productsPriceRange: [null, null]
+    }}))
       .toEqual({...state, products: products, isDataLoading: false});
   });
 
