@@ -7,7 +7,7 @@ describe('Component: ProductInfo', () => {
   it('Case: rendered correctly', () => {
     render(
       <Provider store={fakeStore}>
-        <ModalForm onModalClose={jest.fn()} onSuccessSubmit={jest.fn()} productId={1} />
+        <ModalForm onModalClose={jest.fn()} onSuccessSubmit={jest.fn()} />
       </Provider>
     );
 

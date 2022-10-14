@@ -1,5 +1,6 @@
 export const AppRoute = {
   Main: '/',
+  Cart: '/cart',
   Catalog: '/catalog',
   CatalogPage: '/catalog/:page',
   Product: '/product/',
@@ -13,11 +14,14 @@ export const APIRoute = {
   Reviews: '/reviews',
   Similar: '/similar',
   Promo: '/promo',
+  Coupon: '/coupons',
+  Order: '/orders'
 } as const;
 
 export const NameSpace = {
   Products: 'PRODUCTS_DATA',
   Reviews: 'REVIEWS_DATA',
+  Cart: 'CART_DATA',
 } as const;
 
 export const ProductTab = {
@@ -100,4 +104,22 @@ export const EventType = {
   Keydown: 'keydown',
   Blur: 'blur',
   Change: 'change'
+} as const;
+
+export const ModalType = {
+  Form: 'form',
+  Add: 'add',
+  Buy: 'buy',
+  Delete: 'delete'
+} as const;
+
+export const ModalSuccessTitleMap: {[key: string]: string} = {
+  form: 'Спасибо за отзыв',
+  add: 'Товар успешно добавлен в корзину',
+  buy: 'Спасибо за покупку',
+} as const;
+
+export const CartQuantity = {
+  Min: 1,
+  Max: 99
 } as const;

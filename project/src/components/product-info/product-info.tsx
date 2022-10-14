@@ -1,14 +1,16 @@
 import { Link, Navigate, useLocation } from 'react-router-dom';
-import { AppRoute, ProductTab } from '../../const';
+import { AppRoute, ModalType, ProductTab } from '../../const';
+import { ModalData } from '../../types/modal-data';
 import { Product } from '../../types/product';
 import { getFormatedPrice } from '../../utils/common';
 import ProductRating from '../product-rating/product-rating';
 
 type ProductInfoProps = {
   product: Product;
+  onAddToCartButtonClick: (data: ModalData, isOpen: boolean) => void;
 }
 
-export default function ProductInfo({product}: ProductInfoProps): JSX.Element {
+export default function ProductInfo({product, onAddToCartButtonClick}: ProductInfoProps): JSX.Element {
   const {id, name, price, reviewCount, rating, description, vendorCode, type, category, level,
     previewImg, previewImg2x, previewImgWebp, previewImgWebp2x} = product;
 
@@ -37,7 +39,14 @@ export default function ProductInfo({product}: ProductInfoProps): JSX.Element {
             <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{reviewCount}</p>
           </div>
           <p className="product__price"><span className="visually-hidden">Цена:</span>{getFormatedPrice(price)} ₽</p>
-          <button className="btn btn--purple" type="button">
+          <button
+            className="btn btn--purple"
+            type="button"
+            onClick={() => onAddToCartButtonClick({
+              product: product,
+              type: ModalType.Add
+            }, true)}
+          >
             <svg width="24" height="16" aria-hidden="true">
               <use xlinkHref="#icon-add-basket"></use>
             </svg>Добавить в корзину

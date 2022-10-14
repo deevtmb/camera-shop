@@ -13,4 +13,5 @@ export type Product = {
     previewImgWebp: string;
     previewImgWebp2x: string;
     reviewCount: number;
+    cartCount?: number;
 }

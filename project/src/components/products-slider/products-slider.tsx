@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductSlider } from '../../const';
+import { ModalData } from '../../types/modal-data';
 import { Product } from '../../types/product';
 import ProductCard from '../product-card/product-card';
 
 type ProductsSliderProps = {
   similarProducts: Product[]
+  onBuyButtonClick: (data: ModalData, isOpen: boolean) => void;
 };
 
-export default function ProductsSlider({similarProducts}: ProductsSliderProps): JSX.Element {
+export default function ProductsSlider({similarProducts, onBuyButtonClick}: ProductsSliderProps): JSX.Element {
   const {id} = useParams();
 
   const [currentFirstSlide, setCurrentFirstSlide] = useState<number>(ProductSlider.FirstSlideId);
@@ -27,7 +29,13 @@ export default function ProductsSlider({similarProducts}: ProductsSliderProps): 
         <h2 className="title title--h3">Похожие товары</h2>
         <div className="product-similar__slider">
           <div className="product-similar__slider-list">
-            {similarProducts.map((product, i) => <ProductCard key={product.id} product={product} isActive={i >= currentFirstSlide && i < ProductSlider.SlidesPerView + currentFirstSlide} />)}
+            {similarProducts.map((product, i) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isActive={i >= currentFirstSlide && i < ProductSlider.SlidesPerView + currentFirstSlide}
+                onBuyButtonClick={onBuyButtonClick}
+              />))}
           </div>
           <button
             className={`${true && 'slider-controls'} slider-controls--prev`}

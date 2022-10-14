@@ -24,3 +24,9 @@ export type ProductsData = {
 export type ReviewsData = {
   reviews: Review[];
 }
+
+export type CartData = {
+  productsInCart: Product[];
+  coupon: string | null;
+  discount: number;
+}

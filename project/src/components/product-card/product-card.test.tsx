@@ -13,7 +13,7 @@ describe('Component: ProductCard', () => {
   it('Case: rendered correctly', () => {
     render(
       <MemoryRouter>
-        <ProductCard product={product}/>
+        <ProductCard product={product} onBuyButtonClick={jest.fn()} />
       </MemoryRouter>
     );
 
@@ -28,15 +28,15 @@ describe('Component: ProductCard', () => {
           <Routes>
             <Route
               path={AppRoute.Catalog}
-              element={<ProductCard product={product} />}
+              element={<ProductCard product={product} onBuyButtonClick={jest.fn()} />}
             />
             <Route
               path={AppRoute.ProductInfo}
-              element={<ProductInfo product={product} />}
+              element={<ProductInfo product={product} onAddToCartButtonClick={jest.fn()} />}
             />
             <Route
               path={`${AppRoute.ProductInfo}${AppRoute.ProductTab}`}
-              element={<ProductInfo product={product} />}
+              element={<ProductInfo product={product} onAddToCartButtonClick={jest.fn()} />}
             />
           </Routes>
         </MemoryRouter>

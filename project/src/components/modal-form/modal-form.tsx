@@ -1,4 +1,5 @@
 import { SyntheticEvent, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { RequestStatus } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { fetchProductReviewsAction, postReviewAction } from '../../store/api-actions';
@@ -6,15 +7,15 @@ import { fetchProductReviewsAction, postReviewAction } from '../../store/api-act
 type ModalFormProps = {
   onModalClose: (arg: boolean) => void;
   onSuccessSubmit: () => void;
-  productId: number;
 }
 
-export default function ModalForm({onModalClose, onSuccessSubmit, productId}: ModalFormProps): JSX.Element {
+export default function ModalForm({onModalClose, onSuccessSubmit}: ModalFormProps): JSX.Element {
   const MIN_REVIEW_LENGTH = 5;
   const dispatch = useAppDispatch();
+  const {id} = useParams();
 
   const [reviewPost, setReviewPost] = useState({
-    cameraId: productId,
+    cameraId: Number(id),
     userName: '',
     advantage: '',
     disadvantage: '',
@@ -28,10 +29,11 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
     evt.preventDefault();
     setIsFormChecked(true);
 
-    if (Object.values(reviewPost).every((value) => Boolean(value)) && reviewPost.review.length >= MIN_REVIEW_LENGTH) {
+    if (Object.values(reviewPost).every((value) => Boolean(value))
+      && reviewPost.review.length >= MIN_REVIEW_LENGTH && id) {
       const response = await dispatch(postReviewAction(reviewPost));
       if (response.meta.requestStatus === RequestStatus.Fulfilled) {
-        dispatch(fetchProductReviewsAction(String(productId)));
+        dispatch(fetchProductReviewsAction(id));
         onSuccessSubmit();
       }
     }
@@ -51,18 +53,56 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
               </legend>
               <div className="rate__bar">
                 <div className="rate__group">
-                  <input className="visually-hidden" id="star-5" name="rate" type="radio" value="5" onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})} />
+                  <input
+                    className="visually-hidden"
+                    id="star-5"
+                    name="rate"
+                    type="radio"
+                    value="5"
+                    onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})}
+                  />
                   <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                  <input className="visually-hidden" id="star-4" name="rate" type="radio" value="4" onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})} />
+                  <input
+                    className="visually-hidden"
+                    id="star-4"
+                    name="rate"
+                    type="radio"
+                    value="4"
+                    onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})}
+                  />
                   <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                  <input className="visually-hidden" id="star-3" name="rate" type="radio" value="3" onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})} />
+                  <input
+                    className="visually-hidden"
+                    id="star-3"
+                    name="rate"
+                    type="radio"
+                    value="3"
+                    onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})}
+                  />
                   <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                  <input className="visually-hidden" id="star-2" name="rate" type="radio" value="2" onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})} />
+                  <input
+                    className="visually-hidden"
+                    id="star-2"
+                    name="rate"
+                    type="radio"
+                    value="2"
+                    onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})}
+                  />
                   <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                  <input className="visually-hidden" id="star-1" name="rate" type="radio" value="1" onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})} />
+                  <input
+                    className="visually-hidden"
+                    id="star-1"
+                    name="rate"
+                    type="radio"
+                    value="1"
+                    onChange={(evt) => setReviewPost({...reviewPost, rating: +evt.currentTarget.value})}
+                  />
                   <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                 </div>
-                <div className="rate__progress"><span className="rate__stars">{reviewPost.rating}</span> <span>/</span> <span className="rate__all-stars">5</span>
+                <div className="rate__progress">
+                  <span className="rate__stars">{reviewPost.rating}</span>
+                  <span>/</span>
+                  <span className="rate__all-stars">5</span>
                 </div>
               </div>
               <p className="rate__message">Нужно оценить товар</p>
@@ -74,7 +114,12 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-name" placeholder="Введите ваше имя" onChange={(evt) => setReviewPost({...reviewPost, userName: evt.currentTarget.value})} />
+                <input
+                  type="text"
+                  name="user-name"
+                  placeholder="Введите ваше имя"
+                  onChange={(evt) => setReviewPost({...reviewPost, userName: evt.currentTarget.value})}
+                />
               </label>
               <p className="custom-input__error">Нужно указать имя</p>
             </div>
@@ -85,7 +130,12 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-plus" placeholder="Основные преимущества товара" onChange={(evt) => setReviewPost({...reviewPost, advantage: evt.currentTarget.value})} />
+                <input
+                  type="text"
+                  name="user-plus"
+                  placeholder="Основные преимущества товара"
+                  onChange={(evt) => setReviewPost({...reviewPost, advantage: evt.currentTarget.value})}
+                />
               </label>
               <p className="custom-input__error">Нужно указать достоинства</p>
             </div>
@@ -96,7 +146,12 @@ export default function ModalForm({onModalClose, onSuccessSubmit, productId}: Mo
                     <use xlinkHref="#icon-snowflake"></use>
                   </svg>
                 </span>
-                <input type="text" name="user-minus" placeholder="Главные недостатки товара" onChange={(evt) => setReviewPost({...reviewPost, disadvantage: evt.currentTarget.value})} />
+                <input
+                  type="text"
+                  name="user-minus"
+                  placeholder="Главные недостатки товара"
+                  onChange={(evt) => setReviewPost({...reviewPost, disadvantage: evt.currentTarget.value})}
+                />
               </label>
               <p className="custom-input__error">Нужно указать недостатки</p>
             </div>

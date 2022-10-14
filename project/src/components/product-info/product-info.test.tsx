@@ -9,7 +9,7 @@ describe('Component: ProductInfo', () => {
   it('Case: rendered correctly', () => {
     render(
       <MemoryRouter>
-        <ProductInfo product={product}/>
+        <ProductInfo product={product} onAddToCartButtonClick={jest.fn()}/>
       </MemoryRouter>
     );
 

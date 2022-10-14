@@ -1,15 +1,18 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
+import { RemoveScroll } from 'react-remove-scroll';
 import { useSearchParams } from 'react-router-dom';
-import { DocumentTitle, NavigateParam, SortParam, SortType } from '../../const';
+import { DocumentTitle, ModalType, NavigateParam, SortParam, SortType } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchProductsAction } from '../../store/api-actions';
 import { getLoadingStatus, getProducts, getPromoProduct } from '../../store/products-data/selectors';
+import { ModalData } from '../../types/modal-data';
 import Banner from '../banner/banner';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import CatalogCardsList from '../catalog-cards-list/catalog-cards-list';
 import CatalogFilter from '../catalog-filter/catalog-filter';
 import CatalogSort from '../catalog-sort/catalog-sort';
 import LoadingLayout from '../loading-layout/loading-layout';
+import Modal from '../modal/modal';
 import Pagination from '../pagination/pagination';
 
 const PRODUCTS_PER_VIEW = 9;
@@ -25,6 +28,14 @@ export default function Catalog(): JSX.Element {
 
   const [currentPage, setCurrentPage] = useState(DEFAULT_PAGE);
   const [searchParams, setSearchParams] = useSearchParams(new URLSearchParams());
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState<ModalData>({product: null, type: ModalType.Add});
+
+  const onModalOpenHandler = (data: ModalData, isOpen: boolean) => {
+    setModalData(data);
+    setIsModalOpen(isOpen);
+  };
 
   const onSortChange = (evt: SyntheticEvent<HTMLInputElement>) => {
     const target = evt.currentTarget;
@@ -71,8 +82,10 @@ export default function Catalog(): JSX.Element {
                 <CatalogSort onSortChange={onSortChange} searchParams={searchParams.toString() }/>
                 {isDataLoading ?
                   <LoadingLayout /> :
-                  <CatalogCardsList products={products
-                    .slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)}
+                  <CatalogCardsList
+                    products={products
+                      .slice(PRODUCTS_PER_VIEW * currentPage - PRODUCTS_PER_VIEW, PRODUCTS_PER_VIEW * currentPage)}
+                    onBuyButtonClick={onModalOpenHandler}
                   />}
                 {!!products.length &&
                   <Pagination
@@ -85,6 +98,10 @@ export default function Catalog(): JSX.Element {
           </div>
         </section>
       </div>
+      {isModalOpen &&
+        <RemoveScroll>
+          <Modal onModalClose={setIsModalOpen} modalProduct={modalData.product} modalType={modalData.type} />
+        </RemoveScroll>}
     </main>
   );
 }

@@ -9,7 +9,7 @@ describe('Component: ProductsSlider', () => {
 
     render(
       <MemoryRouter>
-        <ProductsSlider similarProducts={products} />
+        <ProductsSlider similarProducts={products} onBuyButtonClick={jest.fn()} />
       </MemoryRouter>
     );
 

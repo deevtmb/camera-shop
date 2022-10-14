@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { useParams } from 'react-router-dom';
-import { DocumentTitle, RequestStatus } from '../../const';
+import { DocumentTitle, ModalType, RequestStatus } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { fetchProductInfoAction, fetchProductReviewsAction, fetchSimilarProductsAction } from '../../store/api-actions';
 import { getProductInfo, getSimilarProducts } from '../../store/products-data/selectors';
 import { getReviews } from '../../store/reviews-data/selectors';
+import { ModalData } from '../../types/modal-data';
 import Breadcrumbs from '../breadcrumbs/breadcrumbs';
 import LoadingLayout from '../loading-layout/loading-layout';
 import Modal from '../modal/modal';
@@ -25,6 +26,12 @@ export default function Product({onRequestStatusChange}: ProductProps): JSX.Elem
   const reviews = useAppSelector(getReviews);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState<ModalData>({product: product, type: ModalType.Form});
+
+  const onModalOpenHandler = (data: ModalData, isOpen: boolean) => {
+    setModalData(data);
+    setIsModalOpen(isOpen);
+  };
 
   const checkProductId = () => Boolean(product && id && product.id === +id);
 
@@ -50,18 +57,21 @@ export default function Product({onRequestStatusChange}: ProductProps): JSX.Elem
       <div className="page-content">
         {product && <Breadcrumbs productName={product.name}/>}
         <div className="page-content__section">
-          {product && checkProductId() ? <ProductInfo product={product}/> : <LoadingLayout />}
+          {product && checkProductId()
+            ? <ProductInfo product={product} onAddToCartButtonClick={onModalOpenHandler}/>
+            : <LoadingLayout />}
         </div>
         <div className="page-content__section">
-          {(!!similarProducts.length && checkProductId()) && <ProductsSlider similarProducts={similarProducts} />}
+          {(!!similarProducts.length && checkProductId())
+            && <ProductsSlider similarProducts={similarProducts} onBuyButtonClick={onModalOpenHandler} />}
         </div>
         <div className="page-content__section">
-          <ProductReviewsList reviews={reviews} onReviewButtonClick={setIsModalOpen} />
+          <ProductReviewsList reviews={reviews} onReviewButtonClick={onModalOpenHandler} />
         </div>
       </div>
-      {(isModalOpen && id !== undefined) &&
+      {(isModalOpen && id) &&
         <RemoveScroll>
-          <Modal onModalClose={setIsModalOpen} />
+          <Modal onModalClose={setIsModalOpen} modalProduct={modalData.product} modalType={modalData.type} />
         </RemoveScroll>}
     </main>
   );

@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
+import { ModalType } from '../../const';
+import { useAppSelector } from '../../hooks/hooks';
+import { getProductInfo } from '../../store/products-data/selectors';
+import { ModalData } from '../../types/modal-data';
 import { Review } from '../../types/review';
 import ProductReview from '../product-review/product-review';
 
 type ProductReviewsListProps = {
   reviews: Review[];
-  onReviewButtonClick: (arg: boolean) => void;
+  onReviewButtonClick: (data: ModalData, isOpen: boolean) => void;
 }
 
 export default function ProductReviewsList({reviews, onReviewButtonClick}: ProductReviewsListProps): JSX.Element {
   const REVIEWS_PER_VIEW = 3;
+  const product = useAppSelector(getProductInfo);
 
   const [visibleReviewsCount, setVisibleReviewsCount] = useState(REVIEWS_PER_VIEW);
   const visibleReviews = [...reviews]
@@ -36,7 +41,15 @@ export default function ProductReviewsList({reviews, onReviewButtonClick}: Produ
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn" type="button" onClick={() => onReviewButtonClick(true)}>Оставить свой отзыв</button>
+          <button
+            className="btn"
+            type="button"
+            onClick={() => onReviewButtonClick({
+              product: product,
+              type: ModalType.Form
+            }, true)}
+          >Оставить свой отзыв
+          </button>
         </div>
         <ul className="review-block__list">
           {visibleReviews.map((review) => <ProductReview key={review.id} productReview={review}/>)}

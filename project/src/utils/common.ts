@@ -1,12 +1,7 @@
-const PRICE_DIVIDER = 1000;
-const HUNDREDS_DIGITS_COUNT = 3;
 const DEFAULT_TIMEOUT_DELAY = 400;
 
-export const getFormatedPrice = (price: number) => {
-  const thousands = Math.floor(price / PRICE_DIVIDER);
-  const hundreds = `${price}`.slice(-HUNDREDS_DIGITS_COUNT);
-  return thousands ? `${thousands} ${hundreds}` : hundreds;
-};
+export const getFormatedPrice = (price: number) =>
+  price.toString().replace(/(\d{1,3}(?=(?:\d\d\d)+(?!\d)))/g, `${'$1'} `);
 
 export const debounce = <F extends (...args: Parameters<F>) => ReturnType<F>>(
   cb: F,

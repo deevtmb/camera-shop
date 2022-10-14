@@ -33,11 +33,11 @@ describe('Component: Banner', () => {
             />
             <Route
               path={AppRoute.ProductInfo}
-              element={<ProductInfo product={product} />}
+              element={<ProductInfo product={product} onAddToCartButtonClick={jest.fn()}/>}
             />
             <Route
               path={`${AppRoute.ProductInfo}${AppRoute.ProductTab}`}
-              element={<ProductInfo product={product} />}
+              element={<ProductInfo product={product} onAddToCartButtonClick={jest.fn()}/>}
             />
           </Routes>
         </MemoryRouter>
