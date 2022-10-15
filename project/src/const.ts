@@ -106,17 +106,19 @@ export const EventType = {
   Change: 'change'
 } as const;
 
-export const ModalType = {
-  Form: 'form',
-  Add: 'add',
-  Buy: 'buy',
-  Delete: 'delete'
+export const ModalType: {[key: string]: string} = {
+  Form: 'FORM',
+  Add: 'ADD',
+  BuySuccess: 'BUY_SUCCESS',
+  BuyError: 'BUY_ERROR',
+  Delete: 'DELETE'
 } as const;
 
 export const ModalSuccessTitleMap: {[key: string]: string} = {
-  form: 'Спасибо за отзыв',
-  add: 'Товар успешно добавлен в корзину',
-  buy: 'Спасибо за покупку',
+  [ModalType.Form]: 'Спасибо за отзыв',
+  [ModalType.Add]: 'Товар успешно добавлен в корзину',
+  [ModalType.BuySuccess]: 'Спасибо за покупку',
+  [ModalType.BuyError]: 'Ошибка отправки заказа',
 } as const;
 
 export const CartQuantity = {

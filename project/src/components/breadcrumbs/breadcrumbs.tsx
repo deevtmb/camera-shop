@@ -32,6 +32,10 @@ export default function Breadcrumbs({productName}: BreadcrumbsProps): JSX.Elemen
             <li className="breadcrumbs__item">
               <span className="breadcrumbs__link breadcrumbs__link--active">{productName}</span>
             </li>}
+          {pathname.includes(AppRoute.Cart) &&
+            <li className="breadcrumbs__item">
+              <span className="breadcrumbs__link breadcrumbs__link--active">Корзина</span>
+            </li>}
         </ul>
       </div>
     </div>

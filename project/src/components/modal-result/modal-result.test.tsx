@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { ModalType } from '../../const';
-import ModalSuccess from './modal-success';
+import ModalSuccess from './modal-result';
 
 describe('Component: ModalSuccess', () => {
   it('Case: rendered correctly', () => {

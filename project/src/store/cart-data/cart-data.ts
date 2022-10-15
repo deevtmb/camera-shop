@@ -2,11 +2,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NameSpace } from '../../const';
 import { Product } from '../../types/product';
 import { CartData } from '../../types/state';
+import { getDiscountAction, postOrderAction } from '../api-actions';
+
+const DEFAULT_DISCOUNT = 0;
 
 const initialState: CartData = {
   productsInCart: [],
   coupon: null,
-  discount: 0,
+  discount: DEFAULT_DISCOUNT,
 };
 
 export const cartData = createSlice({
@@ -40,6 +43,23 @@ export const cartData = createSlice({
         product.cartCount = action.payload.count;
       }
     }
+  },
+  extraReducers(builder) {
+    builder
+      .addCase(getDiscountAction.rejected, (state) => {
+        state.discount = DEFAULT_DISCOUNT;
+        state.coupon = null;
+      })
+      .addCase(getDiscountAction.fulfilled, (state, action) => {
+        const [discount, coupon] = action.payload;
+        state.discount = discount;
+        state.coupon = coupon;
+      })
+      .addCase(postOrderAction.fulfilled, (state) => {
+        state.productsInCart = [];
+        state.discount = DEFAULT_DISCOUNT;
+        state.coupon = null;
+      });
   },
 });
 

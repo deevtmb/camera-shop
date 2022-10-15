@@ -4,7 +4,7 @@ import { ModalType } from '../../const';
 import { Product } from '../../types/product';
 import ModalCartChange from '../modal-cart-change/modal-cart-change';
 import ModalForm from '../modal-form/modal-form';
-import ModalSuccess from '../modal-success/modal-success';
+import ModalResult from '../modal-result/modal-result';
 
 type ModalProps = {
   modalProduct: Product | null;
@@ -56,9 +56,9 @@ export default function Modal({onModalClose, modalProduct, modalType}: ModalProp
       <div className={`modal is-active ${isSuccess ? 'modal--narrow' : ''}`}>
         <div className="modal__wrapper">
           <div className="modal__overlay" onClick={() => onModalClose(false)}></div>
-          {!isSuccess
+          {!isSuccess && ![ModalType.BuySuccess, ModalType.BuyError].includes(modalType)
             ? renderModalContent(modalType)
-            : <ModalSuccess onModalClose={onModalClose} modalType={modalType}/>}
+            : <ModalResult onModalClose={onModalClose} modalType={modalType}/>}
         </div>
       </div>
     </FocusTrap>

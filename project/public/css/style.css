@@ -2822,6 +2822,10 @@ button,
   color: #ed6041;
 }
 
+.basket__summary-value--total {
+  font-weight: 700;
+}
+
 .basket__promo {
   width: 100%;
   max-width: 440px;
@@ -2829,6 +2833,14 @@ button,
 
 .basket__promo .title--h4 {
   margin-bottom: 13px;
+}
+
+.basket__empty {
+  margin-bottom: 100px;
+}
+
+.basket__empty a {
+  color: #7575e2;
 }
 
 .btn-icon {
@@ -3375,6 +3387,7 @@ button,
 .basket-item--short .basket-item__description {
   margin-right: 34px;
   margin-left: 34px;
+  min-width: 195px;
 }
 
 .basket-item--short .basket-item__title {

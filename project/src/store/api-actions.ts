@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AxiosInstance } from 'axios';
-import { APIRoute, FilterParam } from '../const';
+import { APIRoute, FilterParam, NameSpace } from '../const';
+import { Order } from '../types/order';
 import { Product } from '../types/product';
 import { PromoProduct } from '../types/promo-product';
 import { Review } from '../types/review';
 import { ReviewPost } from '../types/review-post';
-import { PriceRange } from '../types/state';
+import { PriceRange, State } from '../types/state';
 
 
 export const fetchProductsAction = createAsyncThunk<
@@ -87,6 +89,21 @@ export const postReviewAction = createAsyncThunk<void, ReviewPost, {extra: Axios
   async (review, {extra: api}) => {
     const {data} = await api.post(APIRoute.Reviews, review);
     return data;
+  }
+);
+
+export const getDiscountAction = createAsyncThunk<[number, string], string, {extra: AxiosInstance}>(
+  'data/getDiscount',
+  async (coupon, {extra: api}) => {
+    const {data} = await api.post(APIRoute.Coupon, {coupon});
+    return [data, coupon];
+  }
+);
+
+export const postOrderAction = createAsyncThunk<void, Order, {extra: AxiosInstance}>(
+  'data/postOrder',
+  async (order, {extra: api}) => {
+    await api.post(APIRoute.Order, order);
   }
 );
 
