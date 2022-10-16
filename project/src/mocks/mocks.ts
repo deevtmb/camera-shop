@@ -66,5 +66,10 @@ export const fakeStore = mockStore({
   },
   REVIEWS_DATA: {
     reviews: makeFakeReviews(15),
+  },
+  CART_DATA: {
+    productsInCart: [{...makeFakeProduct(), cartCount: 2}],
+    coupon: null,
+    discount: 15,
   }
 });

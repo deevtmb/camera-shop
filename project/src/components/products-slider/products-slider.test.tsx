@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-import { makeFakeProducts } from '../../mocks/mocks';
+import { fakeStore, makeFakeProducts } from '../../mocks/mocks';
 import ProductsSlider from './products-slider';
 
 describe('Component: ProductsSlider', () => {
@@ -8,9 +9,11 @@ describe('Component: ProductsSlider', () => {
     const products = makeFakeProducts(5);
 
     render(
-      <MemoryRouter>
-        <ProductsSlider similarProducts={products} onBuyButtonClick={jest.fn()} />
-      </MemoryRouter>
+      <Provider store={fakeStore}>
+        <MemoryRouter>
+          <ProductsSlider similarProducts={products} onBuyButtonClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
 
     products.forEach((product) => expect(screen.getByText(product.name)).toBeInTheDocument());

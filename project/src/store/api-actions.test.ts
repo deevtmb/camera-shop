@@ -6,7 +6,7 @@ import { State } from '../types/state';
 import { Action, ThunkDispatch } from '@reduxjs/toolkit';
 import { makeFakePostReview, makeFakeProduct, makeFakeProducts, makeFakeReviews } from '../mocks/mocks';
 import { APIRoute } from '../const';
-import { fetchProductInfoAction, fetchProductReviewsAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction, postReviewAction, searchProducts } from './api-actions';
+import { fetchProductInfoAction, fetchProductReviewsAction, fetchProductsAction, fetchPromoProductAction, fetchSimilarProductsAction, getDiscountAction, postOrderAction, postReviewAction, searchProducts } from './api-actions';
 
 describe('Test: async api-actions', () => {
   const api = createAPI();
@@ -132,6 +132,44 @@ describe('Test: async api-actions', () => {
       expect(actions).toEqual([
         postReviewAction.pending.type,
         postReviewAction.fulfilled.type
+      ]);
+    });
+  });
+
+  describe('Cart data api-actions', () => {
+    const mockCoupon = 'camera-333';
+    const mockOrder = {
+      camerasIds: [1,2],
+      coupon: mockCoupon,
+    };
+
+    it('Case: dispatch getDiscount action POST request to /coupon', async () => {
+      mockAPI.onPost(APIRoute.Coupon).reply(200, 15);
+
+      const store = mockStore();
+
+      await store.dispatch(getDiscountAction(mockCoupon));
+
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        getDiscountAction.pending.type,
+        getDiscountAction.fulfilled.type
+      ]);
+    });
+
+    it('Case: dispatch postOrder action with POST request to /orders', async () => {
+      mockAPI.onPost(APIRoute.Order).reply(200);
+
+      const store = mockStore();
+
+      await store.dispatch(postOrderAction(mockOrder));
+
+      const actions = store.getActions().map(({type}) => type);
+
+      expect(actions).toEqual([
+        postOrderAction.pending.type,
+        postOrderAction.fulfilled.type
       ]);
     });
   });

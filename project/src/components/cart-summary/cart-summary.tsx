@@ -20,13 +20,13 @@ export default function CartSummary({onSendOrderButtonClick}: CartSummaryProps):
   const totalDiscount = Math.floor(totalPrice * (discount / 100));
 
   const couponInputRef = useRef<HTMLInputElement | null>(null);
-  const [couponRequestStatus, setCouponRequestStatus] = useState('');
+  const [couponValidityClass, setCouponValidityClass] = useState('');
 
   const handleFormSubmit = async (evt: FormEvent) => {
     evt.preventDefault();
     if (couponInputRef.current?.value) {
-      const request = await dispatch(getDiscountAction(couponInputRef.current.value));
-      setCouponRequestStatus(request.meta.requestStatus);
+      const {payload} = await dispatch(getDiscountAction(couponInputRef.current.value));
+      setCouponValidityClass(payload ? 'is-valid' : 'is-invalid');
     }
   };
 
@@ -53,9 +53,8 @@ export default function CartSummary({onSendOrderButtonClick}: CartSummaryProps):
             action="#"
             onSubmit={handleFormSubmit}
           >
-            <div className={`custom-input
-            ${couponRequestStatus === RequestStatus.Rejected ? 'is-invalid' : ''}
-            ${couponRequestStatus === RequestStatus.Fulfilled && coupon ? 'is-valid' : ''}`}
+            <div
+              className={`custom-input ${couponValidityClass}`}
             >
               <label><span className="custom-input__label">Промокод</span>
                 <input
@@ -64,7 +63,6 @@ export default function CartSummary({onSendOrderButtonClick}: CartSummaryProps):
                   placeholder="Введите промокод"
                   defaultValue={coupon ? coupon : ''}
                   ref={couponInputRef}
-                  disabled={!products.length}
                   onChange={(evt) => {
                     evt.target.value = evt.target.value.replace(/\s/g, '');
                   }}

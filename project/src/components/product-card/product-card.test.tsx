@@ -12,9 +12,11 @@ describe('Component: ProductCard', () => {
 
   it('Case: rendered correctly', () => {
     render(
-      <MemoryRouter>
-        <ProductCard product={product} onBuyButtonClick={jest.fn()} />
-      </MemoryRouter>
+      <Provider store={fakeStore}>
+        <MemoryRouter>
+          <ProductCard product={product} onBuyButtonClick={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
     );
 
     expect(screen.getByText(product.name)).toBeInTheDocument();

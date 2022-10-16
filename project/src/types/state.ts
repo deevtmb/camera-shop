@@ -1,5 +1,5 @@
 import { store } from '../store';
-import { Product } from './product';
+import { CartProduct, Product } from './product';
 import { PromoProduct } from './promo-product';
 import { Review } from './review';
 
@@ -26,7 +26,7 @@ export type ReviewsData = {
 }
 
 export type CartData = {
-  productsInCart: Product[];
+  productsInCart: CartProduct[];
   coupon: string | null;
   discount: number;
 }

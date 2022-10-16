@@ -1,6 +1,7 @@
 import { ModalType } from '../../const';
-import { useAppDispatch } from '../../hooks/hooks';
-import { addProduct, deleteProduct } from '../../store/cart-data/cart-data';
+import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
+import { addProduct, deleteProduct, increaseCount } from '../../store/cart-data/cart-data';
+import { getCartProducts } from '../../store/cart-data/selectors';
 import { Product } from '../../types/product';
 import ProductCartCard from '../product-cart-card/product-cart-card';
 
@@ -15,9 +16,12 @@ export default function ModalCartChange(
   {type, product, onModalClose, onSuccessProductAdd}: ModalCartChangeProps
 ): JSX.Element {
   const dispatch = useAppDispatch();
+  const cartProducts = useAppSelector(getCartProducts);
 
   const handleAddToCartButton = () => {
-    dispatch(addProduct(product));
+    cartProducts.find((cartProduct) => product.id === cartProduct.id)
+      ? dispatch(increaseCount(product.id))
+      : dispatch(addProduct(product));
     onSuccessProductAdd();
   };
 
