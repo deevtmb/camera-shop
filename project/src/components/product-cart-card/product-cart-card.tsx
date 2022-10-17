@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { CartQuantity, ModalType } from '../../const';
+import { Link } from 'react-router-dom';
+import { AppRoute, CartQuantity, ModalType, ProductTab } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { changeCount, decreaseCount, increaseCount } from '../../store/cart-data/cart-data';
 import { ModalData } from '../../types/modal-data';
@@ -34,7 +35,13 @@ export default function ProductCartCard({onDeleteButtonClick, product, isExtende
         </picture>
       </div>
       <div className="basket-item__description">
-        <p className="basket-item__title">{name}</p>
+        {isExtended ?
+          <Link
+            className="basket-item__title basket-item__title--link"
+            to={`${AppRoute.Product}${id}/${ProductTab.Characteristics}`}
+          >{name}
+          </Link> :
+          <p className="basket-item__title">{name}</p>}
         <ul className="basket-item__list">
           <li className="basket-item__list-item">
             <span className="basket-item__article">Артикул:</span>

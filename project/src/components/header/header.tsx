@@ -1,12 +1,12 @@
 import { Link, useLocation } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, CartQuantity } from '../../const';
 import { useAppSelector } from '../../hooks/hooks';
 import { getCartProducts } from '../../store/cart-data/selectors';
 import HeaderSearch from '../header-search/header-search';
 
 export default function Header(): JSX.Element {
   const cartProductsCount = useAppSelector(getCartProducts)
-    .reduce((total, product) => total + (product.cartCount ?? 0), 0);
+    .reduce((total, product) => total + product.cartCount, 0);
 
   return (
     <header className="header" id="header">
@@ -37,7 +37,11 @@ export default function Header(): JSX.Element {
           <svg width="16" height="16" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
-          {cartProductsCount > 0 && <span className="header__basket-count">{cartProductsCount}</span>}
+          {cartProductsCount >= CartQuantity.Min &&
+            <span
+              className={`header__basket-count ${cartProductsCount > CartQuantity.Max ? 'header__basket-count--big' : ''}`}
+            >{cartProductsCount}
+            </span>}
         </Link>
       </div>
     </header>

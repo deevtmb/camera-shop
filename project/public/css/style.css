@@ -754,6 +754,13 @@ button,
   border-radius: 50%;
 }
 
+.header__basket-count--big {
+  top: 6px;
+  right: 5px;
+  width: 18px;
+  height: 18px;
+}
+
 .main-nav {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -3344,6 +3351,10 @@ button,
   line-height: 32px;
 }
 
+.basket-item__title--link {
+  display: block;
+}
+
 .basket-item__list {
   margin: 0;
   padding: 0;
@@ -3365,6 +3376,7 @@ button,
   font-weight: 700;
   font-size: 24px;
   line-height: 32px;
+  white-space: nowrap;
 }
 
 .basket-item__price {

@@ -42,6 +42,12 @@ export default function CartSummary({onSendOrderButtonClick}: CartSummaryProps):
         ? ModalType.BuySuccess
         : ModalType.BuyError
     }, true);
+
+    if (request.meta.requestStatus === RequestStatus.Fulfilled
+        && couponInputRef.current) {
+      setCouponValidityClass('');
+      couponInputRef.current.value = '';
+    }
   };
 
   return (
