@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AppRoute, CartQuantity, ModalType, ProductTab } from '../../const';
+import { AppRoute, CartQuantity, KeyName, ModalType, ProductTab } from '../../const';
 import { useAppDispatch } from '../../hooks/hooks';
 import { changeCount, decreaseCount, increaseCount } from '../../store/cart-data/cart-data';
 import { ModalData } from '../../types/modal-data';
@@ -20,7 +20,7 @@ export default function ProductCartCard({onDeleteButtonClick, product, isExtende
   const dispatch = useAppDispatch();
   const productsCount = cartCount ? cartCount : CartQuantity.Min;
 
-  const [count, setCount] = useState(productsCount);
+  const [count, setCount] = useState<number | string>(productsCount);
 
   useEffect(() => {
     setCount(productsCount);
@@ -82,12 +82,25 @@ export default function ProductCartCard({onDeleteButtonClick, product, isExtende
             max="99"
             aria-label="количество товара"
             onChange={(evt) => {
-              evt.target.value = +evt.target.value > CartQuantity.Max
-                ? String(CartQuantity.Max) : evt.target.value;
-              evt.target.value = +evt.target.value < CartQuantity.Min
-                ? String(CartQuantity.Min) : evt.target.value;
-              setCount(+evt.target.value);
-              dispatch(changeCount({id, count: +evt.currentTarget.value}));
+              if (+evt.target.value > CartQuantity.Max) {
+                dispatch(changeCount({id, count: Math.min(CartQuantity.Max, +evt.target.value)}));
+                setCount(Math.min(CartQuantity.Max, +evt.target.value));
+              } else if (+evt.target.value > CartQuantity.Min) {
+                dispatch(changeCount({id, count: +evt.target.value}));
+                setCount(+evt.target.value);
+              } else {
+                setCount(evt.target.value && Math.max(CartQuantity.Min, +evt.target.value));
+              }
+            }}
+            onBlur={(evt) => {
+              dispatch(changeCount({id, count: Math.max(CartQuantity.Min, +evt.target.value)}));
+              setCount(Math.max(CartQuantity.Min, +evt.target.value));
+            }}
+            onKeyDown={(evt) => {
+              if (evt.key === KeyName.Enter) {
+                dispatch(changeCount({id, count: Math.max(CartQuantity.Min, +evt.currentTarget.value)}));
+                setCount(Math.max(CartQuantity.Min, +evt.currentTarget.value));
+              }
             }}
           />
           <button
