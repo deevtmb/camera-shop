@@ -85,7 +85,7 @@ export default function ProductCartCard({onDeleteButtonClick, product, isExtende
               if (+evt.target.value > CartQuantity.Max) {
                 dispatch(changeCount({id, count: Math.min(CartQuantity.Max, +evt.target.value)}));
                 setCount(Math.min(CartQuantity.Max, +evt.target.value));
-              } else if (+evt.target.value > CartQuantity.Min) {
+              } else if (+evt.target.value >= CartQuantity.Min) {
                 dispatch(changeCount({id, count: +evt.target.value}));
                 setCount(+evt.target.value);
               } else {
